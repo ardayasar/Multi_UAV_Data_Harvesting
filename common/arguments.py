@@ -49,6 +49,20 @@ def get_common_args():
     parser.add_argument('--safety_radius', type=float, default=3.0,
                         help='safety radius used in map / collision constraints')
 
+    # -------- Multi-seed runs --------
+    parser.add_argument('--seeds', type=int, nargs='+', default=None,
+                        help='list of seeds for multi-seed runs (e.g. --seeds 1 2 3 4 5); overrides --seed')
+
+    # -------- SAR-aligned reward shaping --------
+    parser.add_argument('--sar_reward', type=bool, default=False,
+                        help='whether to use SAR-aligned reward shaping')
+    parser.add_argument('--sar_time_weight', type=float, default=0.5,
+                        help='weight for time-urgency bonus (earlier detection = more reward)')
+    parser.add_argument('--sar_coverage_weight', type=float, default=0.1,
+                        help='weight for coverage bonus (reward for visiting new grid cells)')
+    parser.add_argument('--sar_coordination_weight', type=float, default=0.1,
+                        help='weight for coordination penalty (penalise UAV overlap)')
+
     args = parser.parse_args()
     return args
 

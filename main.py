@@ -21,14 +21,22 @@ def main():
     else:
         raise Exception("No such map!")
 
-    # Reproducibility
-    seed = args.seed
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
+    # Multi-seed support: --seeds 1 2 3 4 5 runs one full experiment per seed
+    seeds = args.seeds if args.seeds is not None else [args.seed]
+    base_tag = args.tag
 
-    # Unified training entry
-    run_training(args, params)
+    for seed in seeds:
+        args.seed = seed
+        # Each seed gets its own result subdirectory (e.g. _s1, _s2, ...)
+        args.tag = f"{base_tag}_s{seed}" if len(seeds) > 1 else base_tag
+
+        # Reproducibility
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+
+        print(f"[main] Starting run  seed={seed}  tag='{args.tag}'")
+        run_training(args, params)
 
 
 if __name__ == '__main__':
