@@ -18,6 +18,10 @@ class RolloutWorker:
         self.epsilon = args.epsilon
         self.anneal_epsilon = args.anneal_epsilon
         self.min_epsilon = args.min_epsilon
+
+        # last episode info dict (for Runner / stats)
+        self.last_info = None
+
         print('Init RolloutWorker')
 
     @torch.no_grad()
@@ -29,42 +33,74 @@ class RolloutWorker:
         self.env.reset(model=model)
         terminated = False
         step = 0
-        episode_reward = 0  # cumulative rewards
-        total_collected_data = 0
-        last_action = np.zeros((self.args.n_agents, self.args.n_actions))
+        episode_reward = 0
+        last_action = np.zeros((self.n_agents, self.n_actions))
         self.agents.policy.init_hidden(1)
 
-        # epsilon
+        # Track which victim indices we've already credited
+        detected_victims = set()
+        time_to_first_detection = None
+
+        # Epsilon scheduling
         epsilon = 0 if evaluate else self.epsilon
         if self.args.epsilon_anneal_scale == 'episode' and not evaluate:
-            epsilon = epsilon - self.anneal_epsilon if epsilon > self.min_epsilon else epsilon
+            epsilon = max(self.min_epsilon, epsilon - self.anneal_epsilon)
 
         while not terminated and step < self.episode_limit:
             obs = self.env.get_obs()
             state = self.env.get_state()
             actions, avail_actions, actions_onehot = [], [], []
+
+            # 1) Choose actions
             for agent_id in range(self.n_agents):
-                avail_action = self.env.get_avail_agent_actions(agent_id)
-                if random_action is True:
-                    action = np.random.choice(np.nonzero(avail_action)[0])
+                avail = self.env.get_avail_agent_actions(agent_id)
+                if random_action:
+                    a = np.random.choice(np.nonzero(avail)[0])
                 else:
-                    action = self.agents.choose_action(obs[agent_id], last_action[agent_id], agent_id,
-                                                       avail_action, epsilon)
-                # generate onehot vector of th action
-                action_onehot = np.zeros(self.args.n_actions)
-                action_onehot[action] = 1
-                actions.append(int(action))
-                actions_onehot.append(action_onehot)
-                avail_actions.append(avail_action)
-                last_action[agent_id] = action_onehot
-                action_record[agent_id].append(action)
+                    a = self.agents.choose_action(
+                        obs[agent_id], last_action[agent_id], agent_id, avail, epsilon
+                    )
+                onehot = np.zeros(self.n_actions)
+                onehot[a] = 1
+                actions.append(int(a))
+                actions_onehot.append(onehot)
+                avail_actions.append(avail)
+                last_action[agent_id] = onehot
+                action_record[agent_id].append(int(a))
 
-            reward, terminated, info = self.env.step(actions, model=model)
+            # 2) Step environment
+            _, terminated, _ = self.env.step(actions, model=model)
 
+            # 3) Custom reward: # newly detected victims minus energy cost
+            new_victims = 0
             for a_id, agent in enumerate(self.env.agents):
-                uav_trjs[a_id].append(agent.current_pose.flatten())
-                d_idx[a_id].append(agent.collected_device)
+                # agent.collected_device is a 1-element np.ndarray
+                dev_array = agent.collected_device
+                # extract an int robustly
+                try:
+                    dev = int(dev_array.item())
+                except Exception:
+                    dev = int(np.array(dev_array).flatten()[0])
 
+                # credit only the first time we see this victim
+                if dev != -1 and dev not in detected_victims:
+                    new_victims += 1
+                    detected_victims.add(dev)
+                    if time_to_first_detection is None:
+                        # step index when first victim was detected
+                        time_to_first_detection = step
+
+                # record positions & indices
+                uav_trjs[a_id].append(agent.current_pose.flatten())
+                d_idx[a_id].append(dev)
+
+            # energy penalty: 1 per non-hover (action != 0) move
+            energy_penalty = sum(1 for a in actions if a != 0)
+
+            alpha = 0.1
+            reward = new_victims - alpha * energy_penalty
+
+            # 4) Log step data
             o.append(obs)
             s.append(state)
             u.append(np.reshape(actions, [self.n_agents, 1]))
@@ -75,36 +111,36 @@ class RolloutWorker:
             padded.append([0.])
             episode_reward += reward
             step += 1
-            if self.args.epsilon_anneal_scale == 'step' and not evaluate:
-                epsilon = epsilon - self.anneal_epsilon if epsilon > self.min_epsilon else epsilon
 
+            # epsilon anneal per step
+            if self.args.epsilon_anneal_scale == 'step' and not evaluate:
+                epsilon = max(self.min_epsilon, epsilon - self.anneal_epsilon)
+
+        # Append final positions & mark termination
         for a_id, agent in enumerate(self.env.agents):
             uav_trjs[a_id].append(agent.current_pose.flatten())
-            d_idx[a_id].append(agent.collected_device)
+            d_idx[a_id].append(-1)
 
-            # if terminated, the agent will connect to nothing
-            d_idx[a_id].append(np.array([-1]))
-
-        # last obs
+        # Last observation
         obs = self.env.get_obs()
         state = self.env.get_state()
         o.append(obs)
         s.append(state)
+
+        # Build next-state arrays
         o_next = o[1:]
         s_next = s[1:]
         o = o[:-1]
         s = s[:-1]
-        # get avail_action for last obs, because target_q needs avail_action in training
-        avail_actions = []
-        for agent_id in range(self.n_agents):
-            avail_action = self.env.get_avail_agent_actions(agent_id)
-            avail_actions.append(avail_action)
-        avail_u.append(avail_actions)
+
+        # Avail actions for last obs
+        last_avail = [self.env.get_avail_agent_actions(i) for i in range(self.n_agents)]
+        avail_u.append(last_avail)
         avail_u_next = avail_u[1:]
         avail_u = avail_u[:-1]
 
-        # if step < self.episode_limit, padding
-        for i in range(step, self.episode_limit):
+        # Pad if early termination
+        for _ in range(step, self.episode_limit):
             o.append(np.zeros((self.n_agents, self.obs_shape)))
             u.append(np.zeros([self.n_agents, 1]))
             s.append(np.zeros(self.state_shape))
@@ -117,25 +153,39 @@ class RolloutWorker:
             padded.append([1.])
             terminate.append([1.])
 
-        episode = dict(o=o.copy(),
-                       s=s.copy(),
-                       u=u.copy(),
-                       r=r.copy(),
-                       avail_u=avail_u.copy(),
-                       o_next=o_next.copy(),
-                       s_next=s_next.copy(),
-                       avail_u_next=avail_u_next.copy(),
-                       u_onehot=u_onehot.copy(),
-                       padded=padded.copy(),
-                       terminated=terminate.copy()
-                       )
+        # Package into dict
+        episode = dict(
+            o=o.copy(), s=s.copy(), u=u.copy(), r=r.copy(),
+            avail_u=avail_u.copy(), o_next=o_next.copy(), s_next=s_next.copy(),
+            avail_u_next=avail_u_next.copy(), u_onehot=u_onehot.copy(),
+            padded=padded.copy(), terminated=terminate.copy()
+        )
+        for k in episode:
+            episode[k] = np.array([episode[k]])
 
-        for key in episode.keys():
-            episode[key] = np.array([episode[key]])
-        if not evaluate:
-            self.epsilon = epsilon
+        # --- Episode-level metrics for statistics ---
+        total_detected = len(detected_victims)
 
-        # get total collected data
-        total_collected_data = self.env.total_collected_data
+        if time_to_first_detection is None:
+            # no victim detected: set to horizon as per spec
+            time_to_first_detection = self.env.episode_limit
 
-        return episode, episode_reward, step, total_collected_data, uav_trjs, d_idx, action_record
+        energy_used = float(getattr(self.env, "energy_used", 0.0))
+        energy_per_victim = energy_used / max(1, total_detected)
+
+        info = {
+            "victims_found": total_detected,
+            "time_to_first_detection": time_to_first_detection,
+            "energy_used": energy_used,
+            "energy_per_victim": energy_per_victim,
+            "episode_steps": step,
+        }
+
+        # expose metrics for Runner / external scripts
+        self.env.victims_found = total_detected
+        self.env.time_to_first_detection = time_to_first_detection
+        self.env.energy_per_victim = energy_per_victim
+        self.last_info = info
+
+        # Return same outputs as before (compatibility)
+        return episode, episode_reward, step, total_detected, uav_trjs, d_idx, action_record

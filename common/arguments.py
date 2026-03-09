@@ -36,8 +36,18 @@ def get_common_args():
                         help='whether clear the localization buffer')
     parser.add_argument('--buffer_size', type=int, default=5000, help='the size of the replay buffer')
     parser.add_argument('--n_agents', type=int, default=3, help='the number of the agents')
-    parser.add_argument('--user_location_info', default=True, action='store_false', help='whether to use the user location in observation')
-    parser.add_argument('--sample_method', type=str, default='random', help='how to choose the samples from the localization buffer') 
+    parser.add_argument('--user_location_info', default=True, action='store_false',
+                        help='whether to use the user location in observation')
+    parser.add_argument('--sample_method', type=str, default='random',
+                        help='how to choose the samples from the localization buffer')
+
+    # -------- NEW: sensitivity parameters --------
+    parser.add_argument('--p_on', type=float, default=0.8,
+                        help='on-probability of victim devices (BLE beacons)')
+    parser.add_argument('--snr_thr_db', type=float, default=0.0,
+                        help='SNR threshold in dB used in channel / access logic')
+    parser.add_argument('--safety_radius', type=float, default=3.0,
+                        help='safety radius used in map / collision constraints')
 
     args = parser.parse_args()
     return args
@@ -70,6 +80,3 @@ def get_mixer_args(args):
     args.grad_norm_clip = 10
 
     return args
-
-
-

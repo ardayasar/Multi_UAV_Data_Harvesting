@@ -1,3 +1,4 @@
+import numpy as np
 from .RadioChannelBase import *
 
 
@@ -22,9 +23,10 @@ class SegmentedChannelModel(RadioChannelBase):
             for i_d in range(num_device):
                 meas = RadioMeasurementStr()
                 meas.dist = np.linalg.norm((device_poses[i_d] - uav_pose))
-                meas.ch_gain_db, meas.rssi_db, meas.snr_db, meas.ch_capacity = self.channel_response(meas.dist,
-                                                                                                     device_status[
-                                                                                                         i_u, i_d])
+                meas.ch_gain_db, meas.rssi_db, meas.snr_db, meas.ch_capacity = self.channel_response(
+                    meas.dist,
+                    device_status[i_u, i_d]
+                )
                 meas.los_status = device_status[i_u, i_d]
                 meas.uav_pose = uav_pose
                 meas.device_pose = device_poses[i_d]
@@ -41,8 +43,10 @@ class SegmentedChannelModel(RadioChannelBase):
 
         meas = RadioMeasurementStr()
         meas.dist = np.linalg.norm((device_pose - uav_pose))
-        meas.ch_gain_db, meas.rssi_db, meas.snr_db, meas.ch_capacity = self.channel_response(meas.dist,
-                                                                                             device_status)
+        meas.ch_gain_db, meas.rssi_db, meas.snr_db, meas.ch_capacity = self.channel_response(
+            meas.dist,
+            device_status
+        )
         meas.los_status = device_status
         meas.uav_pose = uav_pose
         meas.device_pose = device_pose
@@ -65,10 +69,16 @@ class SegmentedChannelModel(RadioChannelBase):
 
     def channel_response(self, dist, link_status):
         log_dist = 10 * np.log10(dist)
-        ch_gain_los = self.ch_param.los_bias_db + self.ch_param.los_exp * log_dist + np.random.normal(
-            scale=self.ch_param.los_var_db)
-        ch_gain_nlos = self.ch_param.nlos_bias_db + self.ch_param.nlos_exp * log_dist + np.random.normal(
-            scale=self.ch_param.nlos_var_db)
+        ch_gain_los = (
+            self.ch_param.los_bias_db
+            + self.ch_param.los_exp * log_dist
+            + np.random.normal(scale=self.ch_param.los_var_db)
+        )
+        ch_gain_nlos = (
+            self.ch_param.nlos_bias_db
+            + self.ch_param.nlos_exp * log_dist
+            + np.random.normal(scale=self.ch_param.nlos_var_db)
+        )
 
         ch_gain_db = link_status * ch_gain_los + (1 - link_status) * ch_gain_nlos
 
@@ -86,7 +96,7 @@ class SegmentedChannelModel(RadioChannelBase):
         d_size_x = int(city.urban_config.map_x_len) + 1
         d_size_y = int(city.urban_config.map_y_len) + 1
 
-        # discretize the map into nodes in including the edge nodes
+        # discretize the map into nodes including the edge nodes
         size_x = int(city.urban_config.map_x_len / step_size) + 1
         size_y = int(city.urban_config.map_y_len / step_size) + 1
 
@@ -106,15 +116,39 @@ class SegmentedChannelModel(RadioChannelBase):
         pass
 
     def check_link_status(self, d_pos, u_pos):
-        """check the link status between a device and a UAV in the link status matrix"""
-        step_size = 20
-        d_index = d_pos // step_size
-        u_index = u_pos // step_size
-        index = np.hstack((d_index.flatten()[:2], u_index.flatten()[:2]))
+        """
+        Check the link status between a device and a UAV in the link_status matrix.
+
+        We discretize positions with `step_size` and then CLIP the resulting indices
+        to the valid range of `self.link_status` to avoid rare out-of-bounds errors.
+        """
+        if self.link_status is None:
+            raise RuntimeError(
+                "SegmentedChannelModel.link_status is None. "
+                "You must initialize it (e.g. via init_city_link_status and assign to self.link_status)."
+            )
+
+        step_size = 20.0
+
+        # Convert positions to discrete indices
+        d_index = (np.array(d_pos, dtype=float) // step_size).astype(int)
+        u_index = (np.array(u_pos, dtype=float) // step_size).astype(int)
+
+        # Build (d_x, d_y, u_x, u_y)
+        index = np.hstack((d_index.flatten()[:2], u_index.flatten()[:2])).astype(int)
         index = tuple(index)
-        link_status = self.link_status[index]
+
+        # --- Robust clipping to valid bounds of link_status ---
+        clipped_index = []
+        for dim, idx in enumerate(index):
+            max_idx = self.link_status.shape[dim] - 1
+            if idx < 0:
+                idx = 0
+            elif idx > max_idx:
+                idx = max_idx
+            clipped_index.append(int(idx))
+        clipped_index = tuple(clipped_index)
+
+        link_status = self.link_status[clipped_index]
 
         return link_status
-
-
-

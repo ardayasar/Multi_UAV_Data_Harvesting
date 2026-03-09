@@ -143,7 +143,9 @@ class DataCollection(EnvironmentBase):
         self.state_extra_battery_to_end = False
 
         # scale of the state
-        self.data_scale = max(self.device_data)
+        self.data_scale = float(np.max(self.device_data)) if np.size(self.device_data) else 1.0
+        if self.data_scale <= 0:
+            self.data_scale = 1.0
         self.dis_scale = max(self.max_index_x, self.max_index_y) * self.step_size  # distance scale
         self.battery_scale = max(params['battery_budget'])
 
@@ -151,6 +153,18 @@ class DataCollection(EnvironmentBase):
         self.device_snr = np.zeros((self.n_agents, self.n_devices))
         # indicate which device is connected by which UAV
         self.device_access = np.zeros(self.n_agents)
+
+        # --- episode-level accounting for statistics ---
+        # total energy spent across all agents in the current episode
+        self.energy_used = 0.0
+        # number of executed non-noop movement actions
+        self.move_count = 0
+        # number of distinct victims detected in this episode (set by RolloutWorker)
+        self.victims_found = 0
+        # step index of first detection (or episode_limit if none)
+        self.time_to_first_detection = None
+        # energy_used / max(1, victims_found)
+        self.energy_per_victim = 0.0
 
         self.reset()
 
@@ -178,6 +192,13 @@ class DataCollection(EnvironmentBase):
         self.last_action = np.zeros((self.n_agents, self.n_actions))
         self.device_snr = self.get_agents_device_snr(model=model)
         self.device_access = self.get_avail_devices()
+
+        # --- reset accounting ---
+        self.energy_used = 0.0
+        self.move_count = 0
+        self.victims_found = 0
+        self.time_to_first_detection = None
+        self.energy_per_victim = 0.0
 
         return
 
@@ -252,52 +273,74 @@ class DataCollection(EnvironmentBase):
 
         for a_id, action in enumerate(actions):
             agent = self.get_agent_by_id(a_id)
+            act = int(action)
+
             if agent.battery > 0 and agent.done is False:
-                # get the connected device's index
                 device_id = self.device_access[a_id]
-                # if there is a device connecting to this agent, then collect data from this device
+
+                # collect data (pre-move)
                 if device_id != -1:
                     device = self.device_list.get_device(int(device_id))
                     if model:
-                        collected_meas = self.learning_channel_model.get_user_capacity(agent.current_pose,
-                                                                                       device.position)
-                        collected_data = self.comm_step(collected_meas, int(device_id), model)
+                        collected_meas = self.learning_channel_model.get_user_capacity(
+                            agent.current_pose, device.position
+                        )
                     else:
-                        collected_meas = self.radio_ch_model.get_measurement_from_device(self.city,
-                                                                                         agent.current_pose,
-                                                                                         device.position)
-                        collected_data = self.comm_step(collected_meas, int(device_id), model)
+                        collected_meas = self.radio_ch_model.get_measurement_from_device(
+                            self.city, agent.current_pose, device.position
+                        )
+
+                    # --- make comm_step output robust: always reduce to a scalar float ---
+                    raw_collect = self.comm_step(collected_meas, int(device_id), model)
+                    if isinstance(raw_collect, (list, tuple, np.ndarray)):
+                        collected_data = float(np.sum(raw_collect))
+                    else:
+                        collected_data = float(raw_collect)
+
                     agent.collected_device = np.array([device_id])
                     agent_collected_data.append(collected_data)
                 else:
                     agent.collected_device = np.array([-1])
-                agent.agent_move(action)
-                # if the agent runs out of the battery, then this agent is done
+
+                # --- accounting BEFORE move ---
+                self.energy_used += float(agent.power_consumption_table[act])
+
+                # move_count should mean "grid movement steps" only (1..4)
+                if act in (1, 2, 3, 4):
+                    self.move_count += 1
+
+                # move agent
+                agent.agent_move(act)
+
+                # done if battery depleted
                 if agent.battery <= 0:
                     agent.done = True
-                movement_reward.append(self.movement_penalty * agent.reward_table[int(action)])
+
+                movement_reward.append(self.movement_penalty * agent.reward_table[act])
+
             else:
                 agent.collected_device = np.array([-1])
 
-        # calculate the reward
-        total_data = np.sum(agent_collected_data)
+        # reward
+        total_data = float(np.sum(agent_collected_data)) if len(agent_collected_data) else 0.0
         self.total_collected_data += total_data
         data_reward = total_data / self.reward_scale
-        reward = data_reward - np.sum(movement_reward)
+        reward = data_reward - float(np.sum(movement_reward))
 
-        # update the snr of the device and the access status of the device
+        # refresh SNR/access
         self.device_snr = self.get_agents_device_snr(model=model)
         self.device_access = self.get_avail_devices()
 
-        # determine whether all the agents arrive the destination and are done
-        n_done = 1
-        for idx, agent in enumerate(self.agents):
-            n_done *= agent.done
-        if n_done == 1 or self._episode_steps >= self.episode_limit:
+        # termination
+        all_done = True
+        for agent in self.agents:
+            all_done = all_done and bool(agent.done)
+
+        if all_done or self._episode_steps >= self.episode_limit:
             terminated = True
+
         self._episode_steps += 1
         return reward, terminated, info
-
     def get_obs(self):
         agents_obs = [self.get_obs_agent(i) for i in range(self.n_agents)]
         return agents_obs
@@ -466,25 +509,39 @@ class DataCollection(EnvironmentBase):
         return avail_actions
 
     def get_avail_agent_actions(self, agent_id):
-        """ Returns the available actions for agent_id """
+        """Returns the available actions for agent_id, safety-aware."""
         agent = self.get_agent_by_id(agent_id)
         avail_actions = [0] * self.n_actions
 
-        # if the agent runs out of battery, it can only take no-op action
+        # If the agent is done or out of battery, it can only take the no-op action.
         if agent.done is True or agent.battery <= 0:
             avail_actions = [0] * (self.n_actions - 1) + [1]
             return avail_actions
 
+        # Ask safety controller what is allowed (0..4), and validate map boundaries for moves.
         avail_movement_actions, _ = self.safety_controller(agent)
-        for i, action in enumerate(avail_movement_actions):
-            if action != 0:
-                pos_index = agent.current_pose_index + agent.action_space[i]
-                avail_actions[i] = self.check_uav_pos(pos_index)
 
-        assert (sum(avail_actions) > 0), "Agent {} cannot preform action".format(agent_id)
+        # hover (0)
+        if avail_movement_actions[0] == 1:
+            avail_actions[0] = 1
+
+        # moves (1..4)
+        for i in (1, 2, 3, 4):
+            if avail_movement_actions[i] == 1:
+                pos_index = agent.current_pose_index + agent.action_space[i]
+                if self.check_uav_pos(pos_index):
+                    avail_actions[i] = 1
+
+        # NO-OP (5) is NOT always allowed (prevents infinite idling); keep it off here.
+
+        # Failsafe: if nothing is available (rare), allow hover if possible, else allow no-op.
+        if sum(avail_actions) == 0:
+            if self.check_uav_pos(agent.current_pose_index):
+                avail_actions[0] = 1
+            else:
+                avail_actions[-1] = 1
 
         return avail_actions
-
     def get_agent_device_snr(self, agent_id, model=False):
         """ Return a numpy array of the SNR of each device for agent_id"""
 

@@ -15,3 +15,18 @@ report.log
 
 # Pycharm
 .idea/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Loose result/output files
+*.npy
+*.csv
+*.pdf
+*.png
+figures/
+ippo_env/
+project_structure.txt
+ruin_mask.npy
+legend_box_3x3.png

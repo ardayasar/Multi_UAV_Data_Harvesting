@@ -4,6 +4,8 @@ from common.rollout import RolloutWorker
 from agent.agent import Agents
 from common.replay_buffer import ReplayBuffer
 import matplotlib.pyplot as plt
+import torch
+import csv
 
 
 class Runner:
@@ -28,31 +30,45 @@ class Runner:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
+        # evaluation counter for logging
+        self.eval_counter = 0
+
+        # approximate payload per FedAvg round (QMIX + RNN params, 32-bit floats)
+        try:
+            q_params = sum(p.numel() for p in self.agents.policy.eval_qmix_net.parameters())
+            rnn_params = sum(p.numel() for p in self.agents.policy.eval_rnn.parameters())
+            self.model_num_params = q_params + rnn_params
+            self.bytes_per_round = 4 * self.model_num_params  # bytes, assuming float32
+        except Exception:
+            self.model_num_params = 0
+            self.bytes_per_round = 0
+
+        # last evaluation aggregate metrics
+        self.last_eval_info = None
+
     def run(self, model=False):
         time_steps, train_steps, episode_steps, evaluate_steps = 0, 0, 0, -1
         # episodes_steps is the number of collected episodes
         best_episode_date = 0.0
         while episode_steps < self.args.total_episodes:
-            # When training without a model, to get a smooth curve in log scale, \
-            # we evaluate the model every training step before the first 1000 training steps
+            # Quick early evaluations (unchanged logic)
             if not model and episode_steps != 0 and episode_steps < 1000 and (episode_steps + 1) % self.args.evaluate_cycle != 0:
-                episode_data, episode_reward, _, _, _ = self.evaluate()
+                episode_data, episode_reward, _, _, _ = self.evaluate(model=model)
                 self.episode_rewards.append(episode_reward)
                 self.episode_data.append(episode_data)
                 self.plt(num='')
             if episode_steps == 0 or (episode_steps + 1) % self.args.evaluate_cycle == 0:
-                episode_data, episode_reward, _, _, _ = self.evaluate()
+                episode_data, episode_reward, _, _, _ = self.evaluate(model=model)
                 print('train_steps {}'.format(train_steps))
                 print('collected data is ', episode_data)
                 if episode_data > best_episode_date:
-                    self.agents.policy.save_model(num='',save_type='best')
+                    self.agents.policy.save_model(num='', save_type='best')
                     best_episode_date = episode_data
                 self.episode_rewards.append(episode_reward)
                 self.episode_data.append(episode_data)
                 self.plt(num='')
                 evaluate_steps += 1
-                # print('time for evaluation', time.time() - start_time)
-                # start_time = time.time()
+
             if model:
                 if episode_steps % self.args.model_learning_period == 0:
                     # Set the position of the devices to the default position for evaluation
@@ -63,6 +79,7 @@ class Runner:
                     self.est_de_pos_list.append(est_de_pos)
                     print('Estimated device position{}: '.format(episode_steps // self.args.model_learning_period), est_de_pos)
                     np.save(self.save_path + '/est_de_pos', self.est_de_pos_list)
+
             episodes = []
             for episode_idx in range(self.args.n_episodes):
                 episode, episode_reward, steps, total_collected_data, uav_trajs, d_idx, a_record \
@@ -72,6 +89,7 @@ class Runner:
                 self.training_episode_data.append(total_collected_data)
                 time_steps += steps
                 episode_steps += 1
+
             episode_batch = episodes[0]
             episodes.pop(0)
             for episode in episodes:
@@ -86,14 +104,97 @@ class Runner:
         np.save(self.save_path + '/training_episode_rewards_{}', self.training_episode_rewards)
         self.agents.policy.save_model()
 
+    def _log_eval_metrics(self, eval_info):
+        """Append one row of aggregated evaluation metrics to eval_metrics.csv."""
+        if eval_info is None:
+            return
+
+        eval_csv = os.path.join(self.save_path, "eval_metrics.csv")
+        file_exists = os.path.exists(eval_csv)
+
+        row = {
+            "map": self.args.map,
+            "alg": self.args.alg,
+            "tag": self.args.tag,
+            "seed": getattr(self.args, "seed", 0),
+            "model": int(bool(getattr(self.args, "model", False))),
+            "federated": int(bool(getattr(self.args, "federated", False))),
+            "eval_index": self.eval_counter,
+            "bytes_per_round": int(self.bytes_per_round),
+            "victims_found_mean": eval_info["victims_found_mean"],
+            "victims_found_std": eval_info["victims_found_std"],
+            "time_to_first_detection_mean": eval_info["time_to_first_detection_mean"],
+            "time_to_first_detection_std": eval_info["time_to_first_detection_std"],
+            "energy_used_mean": eval_info["energy_used_mean"],
+            "energy_used_std": eval_info["energy_used_std"],
+            "energy_per_victim_mean": eval_info["energy_per_victim_mean"],
+            "energy_per_victim_std": eval_info["energy_per_victim_std"],
+        }
+
+        fieldnames = list(row.keys())
+        with open(eval_csv, "a", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(row)
+
+        self.eval_counter += 1
+
     def evaluate(self, model=False):
-        total_collected_data = 0
-        rewards = 0
+        total_collected_data = 0.0
+        rewards = 0.0
+        metrics_list = []
+
+        trjs = device_idx = action_record = None
+
         for epoch in range(self.args.evaluate_epoch):
-            _, episode_reward, _, collected_data, trjs, device_idx, action_record = self.rolloutWorker.generate_episode(epoch, evaluate=True, model=model)
+            _, episode_reward, _, collected_data, trjs, device_idx, action_record = \
+                self.rolloutWorker.generate_episode(epoch, evaluate=True, model=model)
             total_collected_data += collected_data
             rewards += episode_reward
-        return total_collected_data / self.args.evaluate_epoch, rewards / self.args.evaluate_epoch, trjs, device_idx, action_record
+
+            info = getattr(self.rolloutWorker, "last_info", None)
+            if info is not None:
+                metrics_list.append(info)
+
+        # aggregate metrics over evaluation episodes
+        eval_info = None
+        if metrics_list:
+            vf = np.array([m["victims_found"] for m in metrics_list], dtype=float)
+            ttf = np.array([m["time_to_first_detection"] for m in metrics_list], dtype=float)
+            en = np.array([m["energy_used"] for m in metrics_list], dtype=float)
+            epv = np.array([m["energy_per_victim"] for m in metrics_list], dtype=float)
+
+            def agg(arr):
+                mean = float(arr.mean())
+                std = float(arr.std(ddof=1)) if len(arr) > 1 else 0.0
+                return mean, std
+
+            vf_mean, vf_std = agg(vf)
+            ttf_mean, ttf_std = agg(ttf)
+            en_mean, en_std = agg(en)
+            epv_mean, epv_std = agg(epv)
+
+            eval_info = {
+                "victims_found_mean": vf_mean,
+                "victims_found_std": vf_std,
+                "time_to_first_detection_mean": ttf_mean,
+                "time_to_first_detection_std": ttf_std,
+                "energy_used_mean": en_mean,
+                "energy_used_std": en_std,
+                "energy_per_victim_mean": epv_mean,
+                "energy_per_victim_std": epv_std,
+            }
+            self.last_eval_info = eval_info
+            self._log_eval_metrics(eval_info)
+
+        return (
+            total_collected_data / self.args.evaluate_epoch,
+            rewards / self.args.evaluate_epoch,
+            trjs,
+            device_idx,
+            action_record,
+        )
 
     def plt(self, num=None):
         plt.figure()
@@ -119,7 +220,7 @@ class Runner:
         episode_start_steps = episode_steps
         while (episode_steps - episode_start_steps) < self.args.aggregation_period:
             if (episode_steps + 1) % self.args.evaluate_cycle == 0 or episode_steps == 0:
-                data_evl, reward_evl, _, _, _ = self.evaluate()
+                data_evl, reward_evl, _, _, _ = self.evaluate(model=model)
                 if data_evl > best_episode_data:
                     self.agents.policy.save_model(i, save_type='best')
                     best_episode_data = data_evl
@@ -131,7 +232,7 @@ class Runner:
             episodes = []
             for episode_idx in range(self.args.n_episodes):
                 episode, episode_reward, steps, total_collected_data, _, _, _ = \
-                    (self.rolloutWorker.generate_episode(episode_idx, model=model))
+                    self.rolloutWorker.generate_episode(episode_idx, model=model)
                 episodes.append(episode)
                 data_train_list.append(total_collected_data)
                 reward_train_list.append(episode_reward)
