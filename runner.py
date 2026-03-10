@@ -52,12 +52,6 @@ class Runner:
         # episodes_steps is the number of collected episodes
         best_episode_date = 0.0
         while episode_steps < self.args.total_episodes:
-            # Quick early evaluations (unchanged logic)
-            if not model and episode_steps != 0 and episode_steps < 1000 and (episode_steps + 1) % self.args.evaluate_cycle != 0:
-                episode_data, episode_reward, _, _, _ = self.evaluate(model=model)
-                self.episode_rewards.append(episode_reward)
-                self.episode_data.append(episode_data)
-                self.plt(num='')
             if episode_steps == 0 or (episode_steps + 1) % self.args.evaluate_cycle == 0:
                 episode_data, episode_reward, _, _, _ = self.evaluate(model=model)
                 print('train_steps {}'.format(train_steps))

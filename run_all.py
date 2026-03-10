@@ -41,7 +41,7 @@ def main():
     parser.add_argument("--ippo_episodes", type=int, default=3000, help="episodes for IPPO")
     parser.add_argument("--skip_ippo",      action="store_true", help="skip IPPO if deps not available")
     parser.add_argument("--device",          type=str, default="cpu")
-    parser.add_argument("--evaluate_epoch",  type=int, default=5,
+    parser.add_argument("--evaluate_epoch",  type=int, default=20,
                         help="eval episodes per checkpoint (5=fast, 20=statistically robust)")
     args = parser.parse_args()
 
