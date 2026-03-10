@@ -49,6 +49,10 @@ def get_common_args():
     parser.add_argument('--safety_radius', type=float, default=3.0,
                         help='safety radius used in map / collision constraints')
 
+    # -------- Parallelism --------
+    parser.add_argument('--parallel', type=bool, default=False,
+                        help='run seeds in parallel processes (faster on multi-core)')
+
     # -------- Multi-seed runs --------
     parser.add_argument('--seeds', type=int, nargs='+', default=None,
                         help='list of seeds for multi-seed runs (e.g. --seeds 1 2 3 4 5); overrides --seed')
