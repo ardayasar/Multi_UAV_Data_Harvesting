@@ -8,6 +8,7 @@ os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import argparse
+import csv
 import random
 
 import numpy as np
@@ -329,6 +330,40 @@ def main():
     # save curves
     np.save(f"ippo_rewards_{map_name}_s{seed}.npy", np.array(reward_history))
     np.save(f"ippo_eval_{map_name}_s{seed}.npy", np.array(eval_scores))
+
+    # write eval_metrics.csv compatible with generate_seed_table.py
+    csv_dir = os.path.join("result", "ippo", f"{map_name}_s{seed}")
+    os.makedirs(csv_dir, exist_ok=True)
+    csv_path = os.path.join(csv_dir, "eval_metrics.csv")
+    fieldnames = [
+        "method", "map_name", "seed", "train_episode",
+        "victims_localised_mean", "victims_localised_std",
+        "time_to_first_detection_mean", "time_to_first_detection_std",
+        "energy_per_victim_mean", "energy_per_victim_std",
+        "throughput_mean", "reward_mean",
+        "map", "alg", "tag", "model", "federated",
+        "eval_index", "bytes_per_round",
+        "victims_found_mean", "victims_found_std",
+        "energy_used_mean", "energy_used_std",
+    ]
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for idx, (ep, mean_v) in enumerate(eval_scores):
+            writer.writerow({
+                "method": "IPPO", "map_name": map_name, "seed": seed,
+                "train_episode": ep, "victims_localised_mean": mean_v,
+                "victims_localised_std": 0.0,
+                "time_to_first_detection_mean": "", "time_to_first_detection_std": "",
+                "energy_per_victim_mean": "", "energy_per_victim_std": "",
+                "throughput_mean": "", "reward_mean": "",
+                "map": map_name, "alg": "ippo", "tag": f"_s{seed}",
+                "model": 0, "federated": 0,
+                "eval_index": idx, "bytes_per_round": 0,
+                "victims_found_mean": mean_v, "victims_found_std": 0.0,
+                "energy_used_mean": "", "energy_used_std": "",
+            })
+    print(f"Saved eval_metrics.csv → {csv_path}")
     print("Training finished.")
 
     # ---- print last 5 evals in table order ----
