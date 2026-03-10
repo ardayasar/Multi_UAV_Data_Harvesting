@@ -39,8 +39,10 @@ def main():
     parser.add_argument("--seeds",     type=int, nargs="+", default=[1, 2, 3, 4, 5])
     parser.add_argument("--episodes",  type=int, default=30000, help="total_episodes for main.py runs")
     parser.add_argument("--ippo_episodes", type=int, default=3000, help="episodes for IPPO")
-    parser.add_argument("--skip_ippo", action="store_true", help="skip IPPO if deps not available")
-    parser.add_argument("--device",    type=str, default="cpu")
+    parser.add_argument("--skip_ippo",      action="store_true", help="skip IPPO if deps not available")
+    parser.add_argument("--device",          type=str, default="cpu")
+    parser.add_argument("--evaluate_epoch",  type=int, default=5,
+                        help="eval episodes per checkpoint (5=fast, 20=statistically robust)")
     args = parser.parse_args()
 
     py = sys.executable
@@ -52,6 +54,7 @@ def main():
         "--sar_reward", "True",
         "--total_episodes", str(args.episodes),
         "--device", args.device,
+        "--evaluate_epoch", str(args.evaluate_epoch),
     ]
 
     # ── 1. IQL ────────────────────────────────────────────────────
