@@ -20,7 +20,7 @@ def get_common_args():
     parser.add_argument('--gamma', type=float, default=0.99, help='discount factor')
     parser.add_argument('--optimizer', type=str, default="Adam", help='optimizer')
     parser.add_argument('--evaluate_cycle', type=int, default=50, help='how often to evaluate the model')
-    parser.add_argument('--evaluate_epoch', type=int, default=5, help='number of the epoch to evaluate the agent')
+    parser.add_argument('--evaluate_epoch', type=int, default=20, help='number of the epoch to evaluate the agent')
     parser.add_argument('--model_dir', type=str, default='./model', help='model directory of the policy')
     parser.add_argument('--result_dir', type=str, default='./result', help='result directory of the policy')
     parser.add_argument('--load_model', type=bool, default=False, help='whether to load the pretrained model')
@@ -66,6 +66,8 @@ def get_common_args():
                         help='weight for coverage bonus (reward for visiting new grid cells)')
     parser.add_argument('--sar_coordination_weight', type=float, default=0.1,
                         help='weight for coordination penalty (penalise UAV overlap)')
+    parser.add_argument('--lambda_new', type=float, default=1.0,
+                        help='one-time localisation bonus per newly found victim (SAR reward shaping)')
 
     args = parser.parse_args()
     return args

@@ -40,9 +40,7 @@ class RolloutWorker:
         # Track which victim indices we've already credited
         detected_victims = set()
         time_to_first_detection = None
-
-        # SAR reward shaping: visited grid cells (5 m resolution)
-        visited_cells = set()
+        episode_localisation_bonus = 0.0
 
         # Epsilon scheduling
         epsilon = 0 if evaluate else self.epsilon
@@ -101,39 +99,19 @@ class RolloutWorker:
             energy_penalty = sum(1 for a in actions if a != 0)
 
             alpha = 0.1
+            # Base throughput reward (always unchanged)
+            throughput = new_victims - alpha * energy_penalty
 
             if getattr(self.args, 'sar_reward', False):
-                # --- SAR-aligned reward shaping ---
-
-                # 1) Time urgency: earlier victim detection earns more reward
-                time_factor = 1.0 - step / self.episode_limit
-                victim_reward = new_victims * (1.0 + self.args.sar_time_weight * time_factor)
-
-                # 2) Coverage bonus: reward visiting new 5 m grid cells
-                current_cells = set()
-                for agent in self.env.agents:
-                    pos = agent.current_pose.flatten()[:2]
-                    cell = (int(round(pos[0] / 5)), int(round(pos[1] / 5)))
-                    current_cells.add(cell)
-                new_cells = current_cells - visited_cells
-                visited_cells.update(current_cells)
-                coverage_bonus = self.args.sar_coverage_weight * len(new_cells)
-
-                # 3) Coordination penalty: penalise UAVs occupying the same cell
-                positions = []
-                for agent in self.env.agents:
-                    pos = agent.current_pose.flatten()[:2]
-                    positions.append((int(round(pos[0] / 5)), int(round(pos[1] / 5))))
-                overlap = sum(
-                    1 for i in range(len(positions))
-                    for j in range(i + 1, len(positions))
-                    if positions[i] == positions[j]
-                )
-                coordination_penalty = self.args.sar_coordination_weight * overlap
-
-                reward = victim_reward - alpha * energy_penalty + coverage_bonus - coordination_penalty
+                # SAR localisation bonus: fires ONCE per victim (new_victims already
+                # counts only first-time detections via the detected_victims set)
+                assert new_victims >= 0, f"new_victims must be non-negative, got {new_victims}"
+                lambda_new = getattr(self.args, 'lambda_new', 1.0)
+                localisation_bonus = lambda_new * new_victims
+                episode_localisation_bonus += localisation_bonus
+                reward = throughput + localisation_bonus
             else:
-                reward = new_victims - alpha * energy_penalty
+                reward = throughput
 
             # 4) Log step data
             o.append(obs)
@@ -214,6 +192,7 @@ class RolloutWorker:
             "energy_used": energy_used,
             "energy_per_victim": energy_per_victim,
             "episode_steps": step,
+            "localisation_bonus": episode_localisation_bonus,
         }
 
         # expose metrics for Runner / external scripts

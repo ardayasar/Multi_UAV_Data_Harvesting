@@ -126,6 +126,9 @@ def _train_fedqmix(args, params):
     save_path = os.path.join(args.result_dir, "qmix", args.map + args.tag)
     os.makedirs(save_path, exist_ok=True)
 
+    # Seed BEFORE creating environments so all RNG state is deterministic
+    _set_seeds(args.seed)
+
     # 1) Build envs (no SLAL yet)
     envs = [DataCollection(args, learning_channel_model=None, params=params)
             for _ in range(n_workers)]
@@ -164,8 +167,6 @@ def _train_fedqmix(args, params):
                 city=params['city'],
                 device=args.device,
             )
-
-    _set_seeds(args.seed)
 
     # ─── bookkeeping ────────────────────────────────────────────
     total_eps = args.total_episodes
@@ -280,6 +281,9 @@ def _run_single(args, params):
 
     Produces global_data.npy / global_rewards.npy exactly like before.
     """
+    # Seed BEFORE creating the environment so all RNG state is deterministic
+    _set_seeds(args.seed)
+
     # Optional SLAL channel model
     chan_model = None
     if args.model:
@@ -294,7 +298,6 @@ def _run_single(args, params):
     # Build env + runner
     env = DataCollection(args, learning_channel_model=chan_model, params=params)
     _fill_env_info_into_args(env, args)
-    _set_seeds(args.seed)
 
     runner = Runner(env, args)
     runner.run(model=args.model)
@@ -333,11 +336,8 @@ def _fill_env_info_into_args(env, args):
 
 
 def _set_seeds(seed: int):
-    """
-    Reproducibility helper – seeds Python, NumPy and PyTorch RNGs.
-    """
+    """Reproducibility helper — seeds Python, NumPy, PyTorch CPU and GPU RNGs."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    # If you ever use CUDA:
-    # torch.cuda.manual_seed_all(seed)
+    torch.cuda.manual_seed_all(seed)

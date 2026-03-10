@@ -155,16 +155,17 @@ class DataCollection(EnvironmentBase):
         self.device_access = np.zeros(self.n_agents)
 
         # --- episode-level accounting for statistics ---
-        # total energy spent across all agents in the current episode
         self.energy_used = 0.0
-        # number of executed non-noop movement actions
         self.move_count = 0
-        # number of distinct victims detected in this episode (set by RolloutWorker)
         self.victims_found = 0
-        # step index of first detection (or episode_limit if none)
         self.time_to_first_detection = None
-        # energy_used / max(1, victims_found)
         self.energy_per_victim = 0.0
+
+        # --- state-leakage fix: contact tracking (no GT coords for unknown victims) ---
+        self.known_device_idx = list(params.get('known_device_idx', []))
+        # per-device episode accumulators reset in reset()
+        self.device_contact_flag = np.zeros(self.n_devices, dtype=np.float32)
+        self.device_max_snr      = np.zeros(self.n_devices, dtype=np.float32)
 
         self.reset()
 
@@ -199,6 +200,9 @@ class DataCollection(EnvironmentBase):
         self.victims_found = 0
         self.time_to_first_detection = None
         self.energy_per_victim = 0.0
+        self.device_contact_flag = np.zeros(self.n_devices, dtype=np.float32)
+        self.device_max_snr      = np.zeros(self.n_devices, dtype=np.float32)
+        self._update_contact_tracking()
 
         return
 
@@ -330,6 +334,7 @@ class DataCollection(EnvironmentBase):
         # refresh SNR/access
         self.device_snr = self.get_agents_device_snr(model=model)
         self.device_access = self.get_avail_devices()
+        self._update_contact_tracking()
 
         # termination
         all_done = True
@@ -464,8 +469,14 @@ class DataCollection(EnvironmentBase):
         for de_id, device in enumerate(self.device_list.devices):
             est_ue_pos = self.est_device_pos[de_id].copy()
             device_state[de_id, 0] = device.remaining_data / self.data_scale  # remaining data
-            device_state[de_id, 1] = self.pose_to_index(est_ue_pos)[0, 0] / self.max_index_x  # x
-            device_state[de_id, 2] = self.pose_to_index(est_ue_pos)[0, 1] / self.max_index_y  # y
+            if de_id in self.known_device_idx:
+                # Known anchor: position is legitimately available
+                device_state[de_id, 1] = self.pose_to_index(est_ue_pos)[0, 0] / self.max_index_x
+                device_state[de_id, 2] = self.pose_to_index(est_ue_pos)[0, 1] / self.max_index_y
+            else:
+                # Unknown victim: use observation-derived features only (no GT coordinates)
+                device_state[de_id, 1] = self.device_max_snr[de_id] / self.device_sight_range
+                device_state[de_id, 2] = self.device_contact_flag[de_id]
 
         state = {"allies": ally_state, "devices": device_state}
 
@@ -566,6 +577,15 @@ class DataCollection(EnvironmentBase):
         for agent_id in range(self.n_agents):
             agents_device_snr[agent_id, :] = self.get_agent_device_snr(agent_id, model=model)
         return agents_device_snr
+
+    def _update_contact_tracking(self):
+        """Update per-device max-SNR and contact flag from current self.device_snr."""
+        per_device_max = self.device_snr.max(axis=0)  # (n_devices,)
+        self.device_max_snr = np.maximum(self.device_max_snr, per_device_max)
+        self.device_contact_flag = np.where(
+            self.device_max_snr >= self.device_sight_range,
+            1.0, self.device_contact_flag
+        )
 
     def get_avail_devices(self):
         """ Returns the index of connected devices of all agents, -1 if no device is connected,

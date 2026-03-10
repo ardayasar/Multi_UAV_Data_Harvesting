@@ -32,6 +32,7 @@ class Runner:
 
         # evaluation counter for logging
         self.eval_counter = 0
+        self.train_episode = 0
 
         # approximate payload per FedAvg round (QMIX + RNN params, 32-bit floats)
         try:
@@ -89,6 +90,7 @@ class Runner:
                 self.training_episode_data.append(total_collected_data)
                 time_steps += steps
                 episode_steps += 1
+                self.train_episode += 1
 
             episode_batch = episodes[0]
             episodes.pop(0)
@@ -104,7 +106,23 @@ class Runner:
         np.save(self.save_path + '/training_episode_rewards_{}', self.training_episode_rewards)
         self.agents.policy.save_model()
 
-    def _log_eval_metrics(self, eval_info):
+    @staticmethod
+    def _method_label(args):
+        """Short human-readable method label for logging."""
+        alg = getattr(args, 'alg', 'qmix').lower()
+        model = bool(getattr(args, 'model', False))
+        federated = bool(getattr(args, 'federated', False))
+        if alg == 'iql':
+            return 'IQL'
+        if federated and model:
+            return 'FED-MOD'
+        if federated:
+            return 'FED'
+        if model:
+            return 'MOD'
+        return 'QMIX'
+
+    def _log_eval_metrics(self, eval_info, throughput_mean=None, reward_mean=None):
         """Append one row of aggregated evaluation metrics to eval_metrics.csv."""
         if eval_info is None:
             return
@@ -113,22 +131,31 @@ class Runner:
         file_exists = os.path.exists(eval_csv)
 
         row = {
-            "map": self.args.map,
-            "alg": self.args.alg,
-            "tag": self.args.tag,
-            "seed": getattr(self.args, "seed", 0),
-            "model": int(bool(getattr(self.args, "model", False))),
-            "federated": int(bool(getattr(self.args, "federated", False))),
-            "eval_index": self.eval_counter,
-            "bytes_per_round": int(self.bytes_per_round),
-            "victims_found_mean": eval_info["victims_found_mean"],
-            "victims_found_std": eval_info["victims_found_std"],
+            # Primary schema (professor's spec)
+            "method":                       self._method_label(self.args),
+            "map_name":                     self.args.map,
+            "seed":                         getattr(self.args, "seed", 0),
+            "train_episode":                self.train_episode,
+            "victims_localised_mean":       eval_info["victims_found_mean"],
+            "victims_localised_std":        eval_info["victims_found_std"],
             "time_to_first_detection_mean": eval_info["time_to_first_detection_mean"],
-            "time_to_first_detection_std": eval_info["time_to_first_detection_std"],
-            "energy_used_mean": eval_info["energy_used_mean"],
-            "energy_used_std": eval_info["energy_used_std"],
-            "energy_per_victim_mean": eval_info["energy_per_victim_mean"],
-            "energy_per_victim_std": eval_info["energy_per_victim_std"],
+            "time_to_first_detection_std":  eval_info["time_to_first_detection_std"],
+            "energy_per_victim_mean":       eval_info["energy_per_victim_mean"],
+            "energy_per_victim_std":        eval_info["energy_per_victim_std"],
+            "throughput_mean":              throughput_mean if throughput_mean is not None else "",
+            "reward_mean":                  reward_mean if reward_mean is not None else "",
+            # Backward-compat columns (kept for compute_stats.py / generate_seed_table.py)
+            "map":                          self.args.map,
+            "alg":                          self.args.alg,
+            "tag":                          self.args.tag,
+            "model":                        int(bool(getattr(self.args, "model", False))),
+            "federated":                    int(bool(getattr(self.args, "federated", False))),
+            "eval_index":                   self.eval_counter,
+            "bytes_per_round":              int(self.bytes_per_round),
+            "victims_found_mean":           eval_info["victims_found_mean"],
+            "victims_found_std":            eval_info["victims_found_std"],
+            "energy_used_mean":             eval_info["energy_used_mean"],
+            "energy_used_std":              eval_info["energy_used_std"],
         }
 
         fieldnames = list(row.keys())
@@ -186,7 +213,11 @@ class Runner:
                 "energy_per_victim_std": epv_std,
             }
             self.last_eval_info = eval_info
-            self._log_eval_metrics(eval_info)
+            self._log_eval_metrics(
+                eval_info,
+                throughput_mean=total_collected_data / self.args.evaluate_epoch,
+                reward_mean=rewards / self.args.evaluate_epoch,
+            )
 
         return (
             total_collected_data / self.args.evaluate_epoch,
@@ -237,6 +268,7 @@ class Runner:
                 data_train_list.append(total_collected_data)
                 reward_train_list.append(episode_reward)
                 episode_steps += 1
+                self.train_episode += 1
             episode_batch = episodes[0]
             episodes.pop(0)
             for episode in episodes:
