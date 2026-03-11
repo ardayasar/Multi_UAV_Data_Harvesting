@@ -25,8 +25,21 @@ class Runner:
         self.channel_loss_list = []
         self.collected_measurements = []
 
-        # save plot files
-        self.save_path = self.args.result_dir + '/' + args.alg + '/' + args.map + args.tag
+        # save plot files — method-aware directory structure
+        method = self._method_label(args)
+        if method == 'IQL':
+            _path = os.path.join(args.result_dir, 'iql')
+        elif method == 'MOD':
+            _path = os.path.join(args.result_dir, 'qmix', 'mod')
+        elif method == 'FED':
+            _path = os.path.join(args.result_dir, 'qmix', 'fed')
+        elif method == 'FED-MOD':
+            _path = os.path.join(args.result_dir, 'qmix', 'fed_mod')
+        elif method == 'IPPO':
+            _path = os.path.join(args.result_dir, 'ippo')
+        else:  # QMIX
+            _path = os.path.join(args.result_dir, 'qmix')
+        self.save_path = os.path.join(_path, args.map + args.tag)
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 

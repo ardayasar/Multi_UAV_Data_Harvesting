@@ -123,7 +123,8 @@ def _train_fedqmix(args, params):
         args.model == False → FedQMIX without surrogate
     """
     n_workers = args.workers
-    save_path = os.path.join(args.result_dir, "qmix", args.map + args.tag)
+    _fed_sub = "fed_mod" if args.model else "fed"
+    save_path = os.path.join(args.result_dir, "qmix", _fed_sub, args.map + args.tag)
     os.makedirs(save_path, exist_ok=True)
 
     # Seed BEFORE creating environments so all RNG state is deterministic
@@ -311,7 +312,20 @@ def _save_single_results(runner, args):
 
         result/<alg>/<map><tag>/
     """
-    out_dir = os.path.join(args.result_dir, args.alg, args.map + args.tag)
+    model = bool(getattr(args, 'model', False))
+    federated = bool(getattr(args, 'federated', False))
+    alg = args.alg.lower()
+    if alg == 'iql':
+        _sub = os.path.join('iql')
+    elif federated and model:
+        _sub = os.path.join('qmix', 'fed_mod')
+    elif federated:
+        _sub = os.path.join('qmix', 'fed')
+    elif model:
+        _sub = os.path.join('qmix', 'mod')
+    else:
+        _sub = os.path.join('qmix')
+    out_dir = os.path.join(args.result_dir, _sub, args.map + args.tag)
     os.makedirs(out_dir, exist_ok=True)
 
     np.save(os.path.join(out_dir, 'global_data.npy'),

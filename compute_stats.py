@@ -16,8 +16,7 @@ RESULT_ROOT = "result"
 
 def _load_all_eval_metrics(result_root=RESULT_ROOT):
     """Load all eval_metrics.csv into a single DataFrame."""
-    pattern = os.path.join(result_root, "*", "*", "eval_metrics.csv")
-    paths = glob.glob(pattern)
+    paths = glob.glob(os.path.join(result_root, "**", "eval_metrics.csv"), recursive=True)
     if not paths:
         raise RuntimeError(f"No eval_metrics.csv files found under {result_root}")
 
