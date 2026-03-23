@@ -36,14 +36,25 @@ def method_label(alg, model, federated):
     return METHOD_LABELS.get(key, f"{alg.upper()}_m{model}_f{federated}")
 
 
+REQUIRED_COLS = {"map", "alg", "seed", "model", "federated", "eval_index", "victims_found_mean"}
+
+
 def load_data(result_root=RESULT_ROOT):
     paths = glob.glob(os.path.join(result_root, "**", "eval_metrics.csv"), recursive=True)
     if not paths:
         raise RuntimeError(f"No eval_metrics.csv files found under '{result_root}'")
     dfs = []
     for p in paths:
-        df = pd.read_csv(p)
+        try:
+            df = pd.read_csv(p, on_bad_lines="skip")
+        except Exception:
+            df = pd.read_csv(p, error_bad_lines=False)
+        # skip files that don't have the required columns
+        if not REQUIRED_COLS.issubset(df.columns):
+            continue
         dfs.append(df)
+    if not dfs:
+        raise RuntimeError("No valid eval_metrics.csv files found.")
     return pd.concat(dfs, ignore_index=True)
 
 

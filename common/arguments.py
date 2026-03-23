@@ -69,7 +69,7 @@ def get_common_args():
     parser.add_argument('--lambda_new', type=float, default=1.0,
                         help='one-time localisation bonus per newly found victim (SAR reward shaping)')
 
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     return args
 
 

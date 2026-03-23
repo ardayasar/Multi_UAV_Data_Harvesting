@@ -20,11 +20,19 @@ def _load_all_eval_metrics(result_root=RESULT_ROOT):
     if not paths:
         raise RuntimeError(f"No eval_metrics.csv files found under {result_root}")
 
+    required = {"map", "alg", "seed", "model", "federated", "eval_index", "victims_found_mean"}
     dfs = []
     for path in paths:
-        df = pd.read_csv(path)
+        try:
+            df = pd.read_csv(path, on_bad_lines="skip")
+        except Exception:
+            df = pd.read_csv(path, error_bad_lines=False)
+        if not required.issubset(df.columns):
+            continue
         df["run_dir"] = os.path.dirname(path)
         dfs.append(df)
+    if not dfs:
+        raise RuntimeError(f"No valid eval_metrics.csv files found under {result_root}")
     return pd.concat(dfs, ignore_index=True)
 
 
