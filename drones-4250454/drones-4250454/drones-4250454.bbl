@@ -1,0 +1,314 @@
+\begin{thebibliography}{999}
+
+\bibitem[Valavanis and Vachtsevanos(2015)]{valavanisHandbookUnmannedAerial2015}
+Valavanis, K.P.; Vachtsevanos, G.J.
+\newblock {\em Handbook of Unmanned Aerial Vehicles}; Springer,  2015; pp.
+  2863--2864.
+\newblock {\url{https://doi.org/10.1007/978-90-481-9707-1_152}}.
+
+\bibitem[Austin(2010)]{austinUnmannedAircraftSystems2010a}
+Austin, R.
+\newblock {\em Unmanned Aircraft Systems: UAVs Design, Development and
+  Deployment}; Wiley: Chichester, West Sussex, UK,  2010.
+\newblock {\url{https://doi.org/https://doi.org/10.1002/9780470664797}}.
+
+\bibitem[Yao et~al.(2019)Yao, Qin, and Chen]{yaoUnmannedAerialVehicle2019}
+Yao, H.; Qin, R.; Chen, X.
+\newblock Unmanned Aerial Vehicle for Remote Sensing Applications---A Review.
+\newblock {\em Remote Sensing} {\bf 2019}, {\em 11},~1443.
+\newblock {\url{https://doi.org/10.3390/rs11121443}}.
+
+\bibitem[Kocer et~al.(2019)Kocer, Tjahjowidodo, Pratama, and
+  Seet]{kocerInspectionwhileflyingAutonomousContactbased2019}
+Kocer, B.; Tjahjowidodo, T.; Pratama, M.; Seet, G.
+\newblock Inspection-While-Flying: An Autonomous Contact-Based Nondestructive
+  Test Using UAV Tools.
+\newblock {\em Automation in Construction} {\bf 2019}, {\em 106},~102895.
+\newblock {\url{https://doi.org/10.1016/j.autcon.2019.102895}}.
+
+\bibitem[Tomi{\'c} et~al.(2012)Tomi{\'c}, Schmid, Lutz, D{\"o}mel, Kassecker,
+  Mair, Grixa, Ruess, Suppa, and Burschka]{tomicFullyAutonomousUAV2012}
+Tomi{\'c}, T.; Schmid, K.; Lutz, P.; D{\"o}mel, A.; Kassecker, M.; Mair, E.;
+  Grixa, I.; Ruess, F.; Suppa, M.; Burschka, D.
+\newblock Toward a Fully Autonomous UAV: Research Platform for Indoor and
+  Outdoor Urban Search and Rescue.
+\newblock {\em IEEE Robotics \& Automation Magazine} {\bf 2012}, {\em
+  19},~46--56.
+\newblock {\url{https://doi.org/10.1109/MRA.2012.2206473}}.
+
+\bibitem[Han et~al.(2016)Han, Jiang, Zhang, Duong, Guizani, and
+  Karagiannidis]{hanSurveyMobileAnchor2016}
+Han, G.; Jiang, J.; Zhang, C.; Duong, T.Q.; Guizani, M.; Karagiannidis, G.K.
+\newblock A Survey on Mobile Anchor Node Assisted Localization in Wireless
+  Sensor Networks.
+\newblock {\em IEEE Communications Surveys \& Tutorials} {\bf 2016}, {\em
+  18},~2220--2243.
+\newblock {\url{https://doi.org/10.1109/COMST.2016.2544751}}.
+
+\bibitem[Wang et~al.(2017)Wang, Ji, Wu, Bai, Ding, Pang, Chen, Chen, and
+  Fang]{wangGuideLocUAVAssistedMultitarget2017}
+Wang, A.; Ji, X.; Wu, D.; Bai, X.; Ding, N.; Pang, J.; Chen, S.; Chen, X.;
+  Fang, D.
+\newblock GuideLoc: UAV-Assisted Multitarget Localization System for Disaster
+  Rescue.
+\newblock {\em Mobile Information Systems} {\bf 2017}, {\em 2017},~1267608.
+\newblock {\url{https://doi.org/10.1155/2017/1267608}}.
+
+\bibitem[Kong et~al.(2024)Kong, Zhou, Li, and Wang]{zhouMultiUAVDRL2024}
+Kong, X.; Zhou, Y.; Li, Z.; Wang, S.
+\newblock Multi-UAV Simultaneous Target Assignment and Path Planning Based on
+  Deep Reinforcement Learning in Dynamic Multiple Obstacles Environments.
+\newblock {\em Frontiers in Neurorobotics} {\bf 2024}, {\em 17},~1302898.
+\newblock {\url{https://doi.org/10.3389/fnbot.2023.1302898}}.
+
+\bibitem[Ewers et~al.(2024)Ewers, Anderson, and
+  Thomson]{ewersTimeCriticalSAR2024}
+Ewers, J.H.; Anderson, D.; Thomson, D.
+\newblock Deep Reinforcement Learning for Time-Critical Wilderness Search and
+  Rescue Using Drones.
+\newblock {\em Frontiers in Robotics and AI} {\bf 2024}, {\em 11},~1527095.
+\newblock {\url{https://doi.org/10.3389/frobt.2024.1527095}}.
+
+\bibitem[Pinto et~al.(2021)Pinto, Vale, Brouwer, Borbinha, Corisco, Ventura,
+  Silva, Mourato, Marques, Romanets, Sargento, and
+  Gon{\c{c}}alves]{pintoRadiologicalScoutingMonitoring2021}
+Pinto, L.R.; Vale, A.; Brouwer, Y.; Borbinha, J.; Corisco, J.; Ventura, R.;
+  Silva, A.M.; Mourato, A.; Marques, G.; Romanets, Y.;  et~al.
+\newblock Radiological Scouting, Monitoring and Inspection Using Drones.
+\newblock {\em Sensors} {\bf 2021}, {\em 21},~3143.
+\newblock {\url{https://doi.org/10.3390/s21093143}}.
+
+\bibitem[{\v{S}}tibinger et~al.(2020){\v{S}}tibinger, B{\'a}{\v{c}}a, and
+  Saska]{stibingerLocalizationIonizingRadiation2020}
+{\v{S}}tibinger, P.; B{\'a}{\v{c}}a, T.; Saska, M.
+\newblock Localization of Ionizing Radiation Sources by Cooperating Micro
+  Aerial Vehicles with Pixel Detectors in Real Time.
+\newblock {\em IEEE Robotics and Automation Letters} {\bf 2020}, {\em
+  5},~3634--3641.
+\newblock {\url{https://doi.org/10.1109/LRA.2020.2978456}}.
+
+\bibitem[Pham et~al.(2018)Pham, La, Feil-Seifer, and
+  Dean]{phamDistributedControlFramework2018}
+Pham, H.X.; La, H.M.; Feil-Seifer, D.; Dean, M.
+\newblock A Distributed Control Framework of Multiple Unmanned Aerial Vehicles
+  for Dynamic Wildfire Tracking.
+\newblock {\em arXiv preprint arXiv:1803.07926} {\bf 2018}.
+\newblock {\url{https://doi.org/10.48550/arXiv.1803.07926}}.
+
+\bibitem[Zanella(2016)]{zanellaBestPracticeRSS2016}
+Zanella, A.
+\newblock Best Practice in RSS Measurements and Ranging.
+\newblock {\em IEEE Communications Surveys \& Tutorials} {\bf 2016}, {\em
+  18},~2662--2686.
+\newblock {\url{https://doi.org/10.1109/COMST.2016.2553452}}.
+
+\bibitem[Liu et~al.(2016)Liu, Fang, Yang, Jiang, Chen, Wang, Xing, and
+  Cai]{liuRSSDistributionBasedPassive2016}
+Liu, C.; Fang, D.; Yang, Z.; Jiang, H.; Chen, X.; Wang, W.; Xing, T.; Cai, L.
+\newblock RSS Distribution-Based Passive Localization and Its Application in
+  Sensor Networks.
+\newblock {\em IEEE Transactions on Wireless Communications} {\bf 2016}, {\em
+  15},~2883--2895.
+\newblock {\url{https://doi.org/10.1109/TWC.2015.2512861}}.
+
+\bibitem[Tomic et~al.(2015)Tomic, Beko, and
+  Dinis]{tomicRSSBasedLocalizationWireless2015}
+Tomic, S.; Beko, M.; Dinis, R.
+\newblock RSS-Based Localization in Wireless Sensor Networks Using Convex
+  Relaxation: Noncooperative and Cooperative Schemes.
+\newblock {\em IEEE Transactions on Vehicular Technology} {\bf 2015}, {\em
+  64},~2037--2050.
+\newblock {\url{https://doi.org/10.1109/TVT.2014.2334397}}.
+
+\bibitem[Zhang et~al.(2014)Zhang, Xia, Jia, Shen, and
+  Guo]{zhangOptimalPlacementMethod2014}
+Zhang, R.; Xia, W.; Jia, Z.; Shen, L.; Guo, J.
+\newblock The Optimal Placement Method of Anchor Nodes Toward RSS-Based
+  Localization Systems.
+\newblock In Proceedings of the Proceedings of the IEEE International
+  Conference on Wireless Communications and Signal Processing (WCSP),  2014,
+  pp. 1--6.
+\newblock {\url{https://doi.org/10.1109/WCSP.2014.6992059}}.
+
+\bibitem[Rubina et~al.(2017)Rubina, Artemenko, Andryeyev, and
+  Mitschele-Thiel]{rubinaNovelHybridPath2017}
+Rubina, A.; Artemenko, A.; Andryeyev, O.; Mitschele-Thiel, A.
+\newblock A Novel Hybrid Path Planning Algorithm for Localization in Wireless
+  Networks.
+\newblock In Proceedings of the Proceedings of the ACM PE-WASUN,  2017, pp.
+  1--16.
+\newblock {\url{https://doi.org/10.1145/3086439.3086441}}.
+
+\bibitem[Sutton and Barto(1998)]{suttonReinforcementLearningIntroduction1998}
+Sutton, R.S.; Barto, A.G.
+\newblock Reinforcement Learning: An Introduction.
+\newblock {\em IEEE Transactions on Neural Networks} {\bf 1998}, {\em
+  9},~1054--1054.
+\newblock {\url{https://doi.org/10.1109/TNN.1998.712192}}.
+
+\bibitem[Ayodele(2010)]{ayodeleIntroductionMachineLearning2010}
+Ayodele, T.O.
+\newblock Introduction to Machine Learning. In {\em New Advances in Machine
+  Learning}; Zhang, Y., Ed.; InTechOpen: Portsmouth, UK,  2010.
+\newblock {\url{https://doi.org/10.5772/9394}}.
+
+\bibitem[Caicedo and Lazebnik(2015)]{caicedoActiveObjectLocalization2015}
+Caicedo, J.C.; Lazebnik, S.
+\newblock Active Object Localization with Deep Reinforcement Learning.
+\newblock In Proceedings of the Proceedings of the IEEE International
+  Conference on Computer Vision (ICCV),  2015, pp. 2488--2496.
+\newblock {\url{https://doi.org/10.1109/ICCV.2015.286}}.
+
+\bibitem[Wang et~al.(2019)Wang, Zhang, Wang, and
+  Wang]{wangMultitaskLearningObject2019}
+Wang, Y.; Zhang, L.; Wang, L.; Wang, Z.
+\newblock Multitask Learning for Object Localization with Deep Reinforcement
+  Learning.
+\newblock {\em IEEE Transactions on Cognitive and Developmental Systems} {\bf
+  2019}, {\em 11},~573--580.
+\newblock {\url{https://doi.org/10.1109/TCDS.2018.2885813}}.
+
+\bibitem[Zhao et~al.(2020)Zhao, Wang, and
+  Li]{zhaoDeepReinforcementLearning2020}
+Zhao, Z.; Wang, Q.; Li, X.
+\newblock Deep Reinforcement Learning Based Lane Detection and Localization.
+\newblock {\em Neurocomputing} {\bf 2020}, {\em 413},~328--338.
+\newblock {\url{https://doi.org/10.1016/j.neucom.2020.06.094}}.
+
+\bibitem[Rauchenstein et~al.(2018)Rauchenstein, Vishnu, Li, and
+  Deng]{rauchensteinImprovingUnderwaterLocalization2018}
+Rauchenstein, L.; Vishnu, A.; Li, X.; Deng, Z.
+\newblock Improving Underwater Localization Accuracy with Machine Learning.
+\newblock {\em Review of Scientific Instruments} {\bf 2018}, {\em 89},~074902.
+\newblock {\url{https://doi.org/10.1063/1.5012687}}.
+
+\bibitem[Liu and Abbaszadeh(2019)]{liuDoubleQLearningRadiation2019}
+Liu, Z.; Abbaszadeh, S.
+\newblock Double Q-Learning for Radiation Source Detection.
+\newblock {\em Sensors} {\bf 2019}, {\em 19},~960.
+\newblock {\url{https://doi.org/10.3390/s19040960}}.
+
+\bibitem[Proctor et~al.(2021)Proctor, Teuscher, Hecht, and
+  Osi{\'n}ski]{proctorProximalPolicyOptimization2021}
+Proctor, P.; Teuscher, C.; Hecht, A.; Osi{\'n}ski, M.
+\newblock Proximal Policy Optimization for Radiation Source Search.
+\newblock {\em Journal of Nuclear Engineering} {\bf 2021}, {\em 2},~368--397.
+\newblock {\url{https://doi.org/10.3390/jne2040029}}.
+
+\bibitem[Placed and Castellanos(2020)]{placedDeepReinforcementLearning2020}
+Placed, J.A.; Castellanos, J.A.
+\newblock A Deep Reinforcement Learning Approach for Active SLAM.
+\newblock {\em Applied Sciences} {\bf 2020}, {\em 10},~8386.
+\newblock {\url{https://doi.org/10.3390/app10238386}}.
+
+\bibitem[Grando et~al.(2021)Grando, de~Jesus, Kich, and
+  Kolling]{grandoDoubleCriticDeep2021}
+Grando, R.; de~Jesus, J.C.; Kich, V.; Kolling, A.
+\newblock Double Critic Deep Reinforcement Learning for Mapless 3D Navigation
+  of Unmanned Aerial Vehicles.
+\newblock {\em arXiv preprint arXiv:2112.13724} {\bf 2021}.
+\newblock {\url{https://doi.org/10.48550/arXiv.2112.13724}}.
+
+\bibitem[Jung and Shim(2021)]{jungMaplessNavigationLearning2021}
+Jung, S.; Shim, D.H.
+\newblock Mapless Navigation: Learning UAVs Motion for Exploration of Unknown
+  Environments.
+\newblock {\em arXiv preprint arXiv:2110.01747} {\bf 2021}.
+\newblock {\url{https://doi.org/10.48550/arXiv.2110.01747}}.
+
+\bibitem[Wu et~al.(2019)Wu, Ju, Wu, Lin, Xiong, Xu, Li, and
+  Liang]{chunxueUAVAutonomousTarget2019}
+Wu, C.; Ju, B.; Wu, Y.; Lin, X.; Xiong, N.; Xu, G.; Li, H.; Liang, X.
+\newblock UAV Autonomous Target Search Based on Deep Reinforcement Learning in
+  Complex Disaster Scene.
+\newblock {\em IEEE Access} {\bf 2019}, {\em 7},~118476--118486.
+\newblock {\url{https://doi.org/10.1109/ACCESS.2019.2933002}}.
+
+\bibitem[Zhu et~al.(2024)Zhu, Dong, Zhang, and Zhang]{zhuMARLCommSurvey2024}
+Zhu, C.; Dong, H.; Zhang, Y.; Zhang, Y.
+\newblock A Survey of Multi-Agent Deep Reinforcement Learning with
+  Communication.
+\newblock {\em Autonomous Agents and Multi-Agent Systems} {\bf 2024}, {\em
+  38},~4.
+\newblock {\url{https://doi.org/10.1007/s10458-023-09633-6}}.
+
+\bibitem[Ning and Xie(2024)]{ningMARLSurvey2024}
+Ning, Z.; Xie, L.
+\newblock A Survey on Multi-Agent Reinforcement Learning and Its Applications.
+\newblock {\em Journal of Automation and Intelligence} {\bf 2024}, {\em
+  3},~73--91.
+\newblock {\url{https://doi.org/10.1016/j.jai.2024.02.003}}.
+
+\bibitem[Lamaazi et~al.(2020)Lamaazi, Mizouni, Singh, and
+  Otrok]{lamaaziMobileEdgeBasedCrowdSensing2020}
+Lamaazi, H.; Mizouni, R.; Singh, S.; Otrok, H.
+\newblock A Mobile Edge-Based Crowdsensing Framework for Heterogeneous IoT.
+\newblock {\em IEEE Access} {\bf 2020}, {\em 8},~208802--208816.
+\newblock {\url{https://doi.org/10.1109/ACCESS.2020.3038249}}.
+
+\bibitem[Shahbazi and
+  Byun(2022)]{shahbaziAgentBasedRecommendationELearning2022}
+Shahbazi, Z.; Byun, Y.
+\newblock Agent-Based Recommendation in {E}-Learning Environment Using
+  Knowledge Discovery and Machine Learning Approaches.
+\newblock {\em Mathematics} {\bf 2022}, {\em 10},~1192.
+\newblock {\url{https://doi.org/10.3390/math10071192}}.
+
+\bibitem[Wu et~al.(2022)Wu, Ghadami, Bayrak, Smereka, and
+  Epureanu]{wuTaskAllocationLoad2022}
+Wu, H.; Ghadami, A.; Bayrak, A.E.; Smereka, J.M.; Epureanu, B.I.
+\newblock Task Allocation with Load Management in Multi-Agent Teams.
+\newblock In Proceedings of the Proceedings of the 2022 IEEE International
+  Conference on Robotics and Automation (ICRA),  2022, pp. 8823--8830.
+\newblock {\url{https://doi.org/10.1109/ICRA46639.2022.9811374}}.
+
+\bibitem[Pinto~Neto et~al.(2023)Pinto~Neto, Sadeghi, Zhang, and
+  Dadkhah]{pintoNetoFRLIoT2023}
+Pinto~Neto, E.C.; Sadeghi, S.; Zhang, X.; Dadkhah, S.
+\newblock Federated Reinforcement Learning in IoT: Applications, Opportunities
+  and Open Challenges.
+\newblock {\em Applied Sciences} {\bf 2023}, {\em 13},~6497.
+\newblock {\url{https://doi.org/10.3390/app13116497}}.
+
+\bibitem[Qi et~al.(2021)Qi, Zhou, Lei, and Zheng]{qiFRLSurvey2022}
+Qi, J.; Zhou, Q.; Lei, L.; Zheng, K.
+\newblock Federated Reinforcement Learning: Techniques, Applications and Open
+  Challenges.
+\newblock {\em Intelligence \& Robotics} {\bf 2021}, {\em 1},~18--57.
+\newblock {\url{https://doi.org/10.20517/ir.2021.02}}.
+
+\bibitem[Ebrahimi et~al.(2020)Ebrahimi, Sharafeddine, Ho, and
+  Assi]{ebrahimiAutonomousUAVTrajectory2020}
+Ebrahimi, D.; Sharafeddine, S.; Ho, P.H.; Assi, C.
+\newblock Autonomous UAV Trajectory for Localizing Ground Objects: A
+  Reinforcement Learning Approach.
+\newblock {\em IEEE Transactions on Mobile Computing} {\bf 2020}, {\em
+  19},~2374--2389.
+\newblock {\url{https://doi.org/10.1109/TMC.2020.2966989}}.
+
+\bibitem[Chen et~al.(2023)Chen, Esrafilian, Bayerlein, Gesbert, and
+  Caccamo]{chenModelAidedFederatedReinforcement2023}
+Chen, J.; Esrafilian, O.; Bayerlein, H.; Gesbert, D.; Caccamo, M.
+\newblock Model-Aided Federated Reinforcement Learning for Multi-UAV Trajectory
+  Planning in IoT Networks.
+\newblock In Proceedings of the Proceedings of the 2023 IEEE Globecom Workshops
+  (GC Wkshps),  2023, pp. 818--823.
+\newblock {\url{https://doi.org/10.1109/GCWkshps58843.2023.10465088}}.
+
+\bibitem[Esrafilian et~al.(2021)Esrafilian, Bayerlein, and
+  Gesbert]{esrafilianModelAidedDeepReinforcement2021}
+Esrafilian, O.; Bayerlein, H.; Gesbert, D.
+\newblock Model-Aided Deep Reinforcement Learning for Sample-Efficient UAV
+  Trajectory Design in IoT Networks.
+\newblock In Proceedings of the Proceedings of the 2021 IEEE Global
+  Communications Conference (GLOBECOM),  2021, pp. 1--6.
+\newblock {\url{https://doi.org/10.1109/GLOBECOM46510.2021.9685774}}.
+
+\bibitem[Wen et~al.(2024)Wen, Fang, and Fan]{wenREMGraphNN2024}
+Wen, X.; Fang, S.; Fan, Y.
+\newblock Reconstruction of Radio Environment Map Based on Multi-Source Domain
+  Adaptive of Graph Neural Network for Regression.
+\newblock {\em Sensors} {\bf 2024}, {\em 24},~2523.
+\newblock {\url{https://doi.org/10.3390/s24082523}}.
+
+\end{thebibliography}

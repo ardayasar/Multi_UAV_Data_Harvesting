@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Non-IID client-data diagnostics for FedQMIX training runs.
+Non-IID variance measures the inter-worker spread in mean collected data
+within each aggregation window. Values close to zero confirm that the
+workers explore similar data distributions, validating the FedAvg
+IID assumption in this deployment scenario.}
+\label{tab:noniid}
+\small
+\begin{tabular}{llccc}
+\toprule
+Method & Map & Mean var. & Max var. & Final var. \\
+\midrule
+FED & RBM & 0.0508 & 0.3665 & 0.0011 \\
+FED & RDM & 0.1149 & 1.2908 & 0.0025 \\
+FED-MOD & RBM & 0.2466 & 0.8406 & 0.3057 \\
+FED-MOD & RDM & 0.1072 & 0.4555 & 0.2374 \\
+\bottomrule
+\end{tabular}
+\end{table}

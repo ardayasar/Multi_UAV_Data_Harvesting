@@ -59,6 +59,8 @@ class Runner:
 
         # last evaluation aggregate metrics
         self.last_eval_info = None
+        # last PSO localisation error (only set when model=True)
+        self.last_loc_error = {"mean": None, "std": None}
 
     def run(self, model=False):
         time_steps, train_steps, episode_steps, evaluate_steps = 0, 0, 0, -1
@@ -145,10 +147,16 @@ class Runner:
             "train_episode":                self.train_episode,
             "victims_localised_mean":       eval_info["victims_found_mean"],
             "victims_localised_std":        eval_info["victims_found_std"],
+            # Reviewer 2 — success rate (fraction of victims localised)
+            "success_rate_mean":            eval_info.get("success_rate_mean", ""),
+            "success_rate_std":             eval_info.get("success_rate_std", ""),
             "time_to_first_detection_mean": eval_info["time_to_first_detection_mean"],
             "time_to_first_detection_std":  eval_info["time_to_first_detection_std"],
             "energy_per_victim_mean":       eval_info["energy_per_victim_mean"],
             "energy_per_victim_std":        eval_info["energy_per_victim_std"],
+            # Reviewer 2 — PSO localisation error (only non-empty when model=True)
+            "loc_error_mean":               self.last_loc_error.get("mean", "") or "",
+            "loc_error_std":                self.last_loc_error.get("std", "") or "",
             "throughput_mean":              throughput_mean if throughput_mean is not None else "",
             "reward_mean":                  reward_mean if reward_mean is not None else "",
             # Backward-compat columns (kept for compute_stats.py / generate_seed_table.py)
@@ -195,6 +203,7 @@ class Runner:
         eval_info = None
         if metrics_list:
             vf = np.array([m["victims_found"] for m in metrics_list], dtype=float)
+            sr = np.array([m["success_rate"] for m in metrics_list], dtype=float)
             ttf = np.array([m["time_to_first_detection"] for m in metrics_list], dtype=float)
             en = np.array([m["energy_used"] for m in metrics_list], dtype=float)
             epv = np.array([m["energy_per_victim"] for m in metrics_list], dtype=float)
@@ -205,6 +214,7 @@ class Runner:
                 return mean, std
 
             vf_mean, vf_std = agg(vf)
+            sr_mean, sr_std = agg(sr)
             ttf_mean, ttf_std = agg(ttf)
             en_mean, en_std = agg(en)
             epv_mean, epv_std = agg(epv)
@@ -212,6 +222,8 @@ class Runner:
             eval_info = {
                 "victims_found_mean": vf_mean,
                 "victims_found_std": vf_std,
+                "success_rate_mean": sr_mean,
+                "success_rate_std": sr_std,
                 "time_to_first_detection_mean": ttf_mean,
                 "time_to_first_detection_std": ttf_std,
                 "energy_used_mean": en_mean,
@@ -349,6 +361,18 @@ class Runner:
         np.save(self.save_path + '/channel_loss', self.channel_loss_list)
         np.save(self.save_path + '/collected_measurements', np.array(self.collected_measurements))
         device_pos[unknown_device_idx] = est_device_pos[:, np.newaxis, :]
+
+        # ── Localisation error (Reviewer 2) ────────────────────────────────
+        # Compare PSO estimates with ground-truth positions (2-D, x-y only).
+        true_pos = self.env.params['device_position'][unknown_device_idx][:, 0, :2].astype(float)
+        est_pos_2d = est_device_pos[:, :2].astype(float)
+        errors = np.linalg.norm(est_pos_2d - true_pos, axis=1)
+        loc_err_mean = float(errors.mean())
+        loc_err_std = float(errors.std(ddof=1)) if len(errors) > 1 else 0.0
+        self.last_loc_error = {"mean": loc_err_mean, "std": loc_err_std}
+        np.save(os.path.join(self.save_path, 'loc_error.npy'),
+                np.array([loc_err_mean, loc_err_std]))
+        print(f"[model_learning] PSO loc error: mean={loc_err_mean:.1f} m  std={loc_err_std:.1f} m")
 
         return device_pos
 

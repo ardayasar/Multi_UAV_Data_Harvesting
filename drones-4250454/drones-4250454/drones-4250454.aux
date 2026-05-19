@@ -1,0 +1,351 @@
+\relax 
+\providecommand*\new@tpo@label[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\bibstyle{Definitions/mdpi}
+\newmarginnote{note.1.1}{{1}{10945661sp}}
+\citation{valavanisHandbookUnmannedAerial2015,austinUnmannedAircraftSystems2010a,yaoUnmannedAerialVehicle2019,kocerInspectionwhileflyingAutonomousContactbased2019}
+\citation{tomicFullyAutonomousUAV2012,hanSurveyMobileAnchor2016,wangGuideLocUAVAssistedMultitarget2017,zhouMultiUAVDRL2024,ewersTimeCriticalSAR2024}
+\citation{pintoRadiologicalScoutingMonitoring2021,stibingerLocalizationIonizingRadiation2020}
+\citation{phamDistributedControlFramework2018}
+\citation{zanellaBestPracticeRSS2016,liuRSSDistributionBasedPassive2016}
+\citation{zanellaBestPracticeRSS2016,liuRSSDistributionBasedPassive2016,tomicRSSBasedLocalizationWireless2015}
+\citation{tomicRSSBasedLocalizationWireless2015,zhangOptimalPlacementMethod2014,rubinaNovelHybridPath2017}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{2}{Introduction}{section.1}{}}
+\newlabel{sec:intro@cref}{{[section][1][]1}{[1][2][]2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {1.0.0.1}Limitations of existing approaches.}{2}{paragraph.1.0.0.1}\protected@file@percent }
+\citation{tomicFullyAutonomousUAV2012,hanSurveyMobileAnchor2016,wangGuideLocUAVAssistedMultitarget2017}
+\citation{suttonReinforcementLearningIntroduction1998,ayodeleIntroductionMachineLearning2010}
+\citation{caicedoActiveObjectLocalization2015,wangMultitaskLearningObject2019}
+\citation{zhaoDeepReinforcementLearning2020}
+\citation{rauchensteinImprovingUnderwaterLocalization2018}
+\citation{liuDoubleQLearningRadiation2019}
+\citation{proctorProximalPolicyOptimization2021}
+\citation{placedDeepReinforcementLearning2020,grandoDoubleCriticDeep2021}
+\citation{jungMaplessNavigationLearning2021,chunxueUAVAutonomousTarget2019,zhuMARLCommSurvey2024,ningMARLSurvey2024}
+\citation{lamaaziMobileEdgeBasedCrowdSensing2020}
+\citation{shahbaziAgentBasedRecommendationELearning2022,wuTaskAllocationLoad2022,pintoNetoFRLIoT2023,qiFRLSurvey2022}
+\citation{pintoNetoFRLIoT2023,ebrahimiAutonomousUAVTrajectory2020}
+\citation{chenModelAidedFederatedReinforcement2023}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {1.0.0.2}Why reinforcement learning for post-disaster localisation.}{3}{paragraph.1.0.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {1.0.0.3}Contributions.}{4}{paragraph.1.0.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {1.0.0.4}Post-disaster constraints and algorithm design.}{5}{paragraph.1.0.0.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Problem Statement}{5}{section.2}\protected@file@percent }
+\newlabel{sec:sysmodel}{{2}{5}{Problem Statement}{section.2}{}}
+\newlabel{sec:sysmodel@cref}{{[section][2][]2}{[1][5][]5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Environment}{5}{subsection.2.1}\protected@file@percent }
+\newlabel{sec:env}{{2.1}{5}{Environment}{subsection.2.1}{}}
+\newlabel{sec:env@cref}{{[subsection][1][2]2.1}{[1][5][]5}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.1.0.1}Geometry and free space.}{5}{paragraph.2.1.0.1}\protected@file@percent }
+\newlabel{eq:height}{{2}{5}{Geometry and free space}{equation.2.2}{}}
+\newlabel{eq:height@cref}{{[equation][2][]2}{[1][5][]5}}
+\newlabel{eq:freevox}{{3}{6}{Geometry and free space}{equation.2.3}{}}
+\newlabel{eq:freevox@cref}{{[equation][3][]3}{[1][6][]6}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.1.0.2}Victims and BLE beacons.}{6}{paragraph.2.1.0.2}\protected@file@percent }
+\newlabel{eq:victpos}{{4}{6}{Victims and BLE beacons}{equation.2.4}{}}
+\newlabel{eq:victpos@cref}{{[equation][4][]4}{[1][6][]6}}
+\newlabel{eq:bern}{{5}{6}{Victims and BLE beacons}{equation.2.5}{}}
+\newlabel{eq:bern@cref}{{[equation][5][]5}{[1][6][]6}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.1.0.3}Line-of-sight (LoS) mask.}{6}{paragraph.2.1.0.3}\protected@file@percent }
+\newlabel{eq:losflag}{{7}{6}{Line-of-sight (LoS) mask}{equation.2.7}{}}
+\newlabel{eq:losflag@cref}{{[equation][7][]7}{[1][6][]6}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.1.0.4}Anchor beacons.}{6}{paragraph.2.1.0.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.1.0.5}Time discretisation.}{6}{paragraph.2.1.0.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Notation for the disaster environment.\relax }}{7}{table.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:not}{{1}{7}{Notation for the disaster environment.\relax }{table.caption.1}{}}
+\newlabel{tab:not@cref}{{[table][1][]1}{[1][6][]7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Channel Access Protocol}{7}{subsection.2.2}\protected@file@percent }
+\newlabel{sec:access}{{2.2}{7}{Channel Access Protocol}{subsection.2.2}{}}
+\newlabel{sec:access@cref}{{[subsection][2][2]2.2}{[1][7][]7}}
+\newlabel{eq:tdma}{{8}{7}{Channel Access Protocol}{equation.2.8}{}}
+\newlabel{eq:tdma@cref}{{[subequation][8][]8}{[1][7][]7}}
+\newlabel{eq:tdma_uav}{{8a}{7}{Channel Access Protocol}{equation.2.8a}{}}
+\newlabel{eq:tdma_uav@cref}{{[subequation][1][8]8a}{[1][7][]7}}
+\newlabel{eq:tdma_dev}{{8b}{7}{Channel Access Protocol}{equation.2.8b}{}}
+\newlabel{eq:tdma_dev@cref}{{[subequation][2][8]8b}{[1][7][]7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}UAV Kinematics}{7}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:kin}{{2.3}{7}{UAV Kinematics}{subsection.2.3}{}}
+\newlabel{sec:kin@cref}{{[subsection][3][2]2.3}{[1][7][]7}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.3.0.1}Discrete action space.}{7}{paragraph.2.3.0.1}\protected@file@percent }
+\newlabel{eq:action}{{9}{7}{Discrete action space}{equation.2.9}{}}
+\newlabel{eq:action@cref}{{[equation][9][]9}{[1][7][]7}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.3.0.2}State update and safety filter.}{7}{paragraph.2.3.0.2}\protected@file@percent }
+\newlabel{eq:state}{{10}{7}{State update and safety filter}{equation.2.10}{}}
+\newlabel{eq:state@cref}{{[equation][10][]10}{[1][7][]7}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.3.0.3}Energy dynamics and return feasibility.}{8}{paragraph.2.3.0.3}\protected@file@percent }
+\newlabel{eq:batt}{{11}{8}{Energy dynamics and return feasibility}{equation.2.11}{}}
+\newlabel{eq:batt@cref}{{[equation][11][]11}{[1][8][]8}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.3.0.4}Altitude separation.}{8}{paragraph.2.3.0.4}\protected@file@percent }
+\newlabel{eq:altsep}{{12}{8}{Altitude separation}{equation.2.12}{}}
+\newlabel{eq:altsep@cref}{{[equation][12][]12}{[1][8][]8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Signal and Channel Surrogate}{8}{subsection.2.4}\protected@file@percent }
+\newlabel{sec:channel}{{2.4}{8}{Signal and Channel Surrogate}{subsection.2.4}{}}
+\newlabel{sec:channel@cref}{{[subsection][4][2]2.4}{[1][8][]8}}
+\newlabel{eq:dist_elev}{{13}{8}{Signal and Channel Surrogate}{equation.2.13}{}}
+\newlabel{eq:dist_elev@cref}{{[equation][13][]13}{[1][8][]8}}
+\newlabel{eq:gain}{{14}{8}{Signal and Channel Surrogate}{equation.2.14}{}}
+\newlabel{eq:gain@cref}{{[equation][14][]14}{[1][8][]8}}
+\newlabel{eq:SNR}{{15}{8}{Signal and Channel Surrogate}{equation.2.15}{}}
+\newlabel{eq:SNR@cref}{{[equation][15][]15}{[1][8][]8}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.4.0.1}Surrogate training.}{8}{paragraph.2.4.0.1}\protected@file@percent }
+\newlabel{eq:nll}{{16}{9}{Surrogate training}{equation.2.16}{}}
+\newlabel{eq:nll@cref}{{[equation][16][]16}{[1][8][]9}}
+\newlabel{eq:chan_opt}{{17}{9}{Surrogate training}{equation.2.17}{}}
+\newlabel{eq:chan_opt@cref}{{[equation][17][]17}{[1][9][]9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Reward Function}{9}{subsection.2.5}\protected@file@percent }
+\newlabel{sec:reward}{{2.5}{9}{Reward Function}{subsection.2.5}{}}
+\newlabel{sec:reward@cref}{{[subsection][5][2]2.5}{[1][9][]9}}
+\newlabel{eq:reward}{{18}{9}{Reward Function}{equation.2.18}{}}
+\newlabel{eq:reward@cref}{{[equation][18][]18}{[1][9][]9}}
+\newlabel{eq:throughput}{{19}{9}{Reward Function}{equation.2.19}{}}
+\newlabel{eq:throughput@cref}{{[equation][19][]19}{[1][9][]9}}
+\newlabel{eq:buffer_update}{{20}{9}{Reward Function}{equation.2.20}{}}
+\newlabel{eq:buffer_update@cref}{{[equation][20][]20}{[1][9][]9}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.5.0.1}SAR-aligned shaped reward.}{9}{paragraph.2.5.0.1}\protected@file@percent }
+\newlabel{eq:shaped_reward}{{21}{9}{SAR-aligned shaped reward}{equation.2.21}{}}
+\newlabel{eq:shaped_reward@cref}{{[equation][21][]21}{[1][9][]9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Problem Formulation}{9}{subsection.2.6}\protected@file@percent }
+\newlabel{sec:opt-goal}{{2.6}{9}{Problem Formulation}{subsection.2.6}{}}
+\newlabel{sec:opt-goal@cref}{{[subsection][6][2]2.6}{[1][9][]9}}
+\newlabel{eq:return}{{22}{10}{Problem Formulation}{equation.2.22}{}}
+\newlabel{eq:return@cref}{{[equation][22][]22}{[1][9][]10}}
+\newlabel{prob:P1}{{{P1}}{10}{Problem Formulation}{AMS.3}{}}
+\newlabel{prob:P1@cref}{{[equation][2147483647][]{P1}}{[1][10][]10}}
+\newlabel{c:startend}{{23}{10}{Problem Formulation}{equation.2.23}{}}
+\newlabel{c:startend@cref}{{[equation][23][]23}{[1][10][]10}}
+\newlabel{c:altineq}{{24}{10}{Problem Formulation}{equation.2.24}{}}
+\newlabel{c:altineq@cref}{{[equation][24][]24}{[1][10][]10}}
+\newlabel{c:batteryT}{{25}{10}{Problem Formulation}{equation.2.25}{}}
+\newlabel{c:batteryT@cref}{{[equation][25][]25}{[1][10][]10}}
+\newlabel{c:tdma}{{26}{10}{Problem Formulation}{equation.2.26}{}}
+\newlabel{c:tdma@cref}{{[equation][26][]26}{[1][10][]10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Scenario and Parameter Justification}{10}{subsection.2.7}\protected@file@percent }
+\newlabel{sec:scenario-params}{{2.7}{10}{Scenario and Parameter Justification}{subsection.2.7}{}}
+\newlabel{sec:scenario-params@cref}{{[subsection][7][2]2.7}{[1][10][]10}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.7.0.1}BLE intermittency.}{10}{paragraph.2.7.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.7.0.2}Map size and grid resolution.}{10}{paragraph.2.7.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.7.0.3}Safety radius and airspace separation.}{11}{paragraph.2.7.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Decentralised Learning under a Federated Dec \textnormal  {-} POMDP}{11}{section.3}\protected@file@percent }
+\newlabel{sec:DecPOMDP}{{3}{11}{Decentralised Learning under a Federated Dec \textnormal {-} POMDP}{section.3}{}}
+\newlabel{sec:DecPOMDP@cref}{{[section][3][]3}{[1][11][]11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual diagram of the model-aided federated Dec-POMDP pipeline. The left block represents the environment and its surrogate (BLE devices, 3-D height map, and LoS/NLoS mask), which generate trajectories and RSSI measurements for each UAV. Every UAV maintains its own local observations, replay buffer, and QMIX\,+\,mixer networks; raw trajectories/RSSI never leave the vehicle. After a fixed number of episodes, the UAVs upload \emph  {parameters only} to a lightweight aggregator/server, which performs FedAvg and broadcasts updated weights back to the fleet. This realises centralised training with decentralised, privacy-preserving execution under tight communication bandwidth.\relax }}{12}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:fedqmix_schematic}{{1}{12}{Conceptual diagram of the model-aided federated Dec-POMDP pipeline. The left block represents the environment and its surrogate (BLE devices, 3-D height map, and LoS/NLoS mask), which generate trajectories and RSSI measurements for each UAV. Every UAV maintains its own local observations, replay buffer, and QMIX\,+\,mixer networks; raw trajectories/RSSI never leave the vehicle. After a fixed number of episodes, the UAVs upload \emph {parameters only} to a lightweight aggregator/server, which performs FedAvg and broadcasts updated weights back to the fleet. This realises centralised training with decentralised, privacy-preserving execution under tight communication bandwidth.\relax }{figure.caption.4}{}}
+\newlabel{fig:fedqmix_schematic@cref}{{[figure][1][]1}{[1][11][]12}}
+\newlabel{eq:dec_pomdp_tuple}{{27}{12}{Decentralised Learning under a Federated Dec \textnormal {-} POMDP}{equation.3.27}{}}
+\newlabel{eq:dec_pomdp_tuple@cref}{{[equation][27][]27}{[1][12][]12}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.1}State.}{12}{paragraph.3.0.0.1}\protected@file@percent }
+\newlabel{eq:state_split}{{28}{12}{State}{equation.3.28}{}}
+\newlabel{eq:state_split@cref}{{[equation][28][]28}{[1][12][]12}}
+\newlabel{eq:state_blocks}{{29}{12}{State}{equation.3.29}{}}
+\newlabel{eq:state_blocks@cref}{{[subequation][29][]29}{[1][12][]12}}
+\newlabel{eq:state_uav}{{29a}{12}{State}{equation.3.29a}{}}
+\newlabel{eq:state_uav@cref}{{[subequation][1][29]29a}{[1][12][]12}}
+\newlabel{eq:state_dev}{{29b}{12}{State}{equation.3.29b}{}}
+\newlabel{eq:state_dev@cref}{{[subequation][2][29]29b}{[1][12][]12}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.2}Actions and safety controller.}{12}{paragraph.3.0.0.2}\protected@file@percent }
+\newlabel{eq:joint_action}{{30}{12}{Actions and safety controller}{equation.3.30}{}}
+\newlabel{eq:joint_action@cref}{{[equation][30][]30}{[1][12][]12}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.3}Observations.}{13}{paragraph.3.0.0.3}\protected@file@percent }
+\newlabel{eq:obs_vec}{{31}{13}{Observations}{equation.3.31}{}}
+\newlabel{eq:obs_vec@cref}{{[equation][31][]31}{[1][12][]13}}
+\newlabel{eq:obs_blocks}{{32}{13}{Observations}{equation.3.32}{}}
+\newlabel{eq:obs_blocks@cref}{{[subequation][32][]32}{[1][13][]13}}
+\newlabel{eq:obs1}{{32a}{13}{Observations}{equation.3.32a}{}}
+\newlabel{eq:obs1@cref}{{[subequation][1][32]32a}{[1][13][]13}}
+\newlabel{eq:obs2}{{32b}{13}{Observations}{equation.3.32b}{}}
+\newlabel{eq:obs2@cref}{{[subequation][2][32]32b}{[1][13][]13}}
+\newlabel{eq:obs3}{{32c}{13}{Observations}{equation.3.32c}{}}
+\newlabel{eq:obs3@cref}{{[subequation][3][32]32c}{[1][13][]13}}
+\newlabel{eq:obs4}{{32d}{13}{Observations}{equation.3.32d}{}}
+\newlabel{eq:obs4@cref}{{[subequation][4][32]32d}{[1][13][]13}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.4}Histories and transitions.}{13}{paragraph.3.0.0.4}\protected@file@percent }
+\newlabel{eq:history}{{33}{13}{Histories and transitions}{equation.3.33}{}}
+\newlabel{eq:history@cref}{{[equation][33][]33}{[1][13][]13}}
+\newlabel{eq:transition_kernel}{{34}{13}{Histories and transitions}{equation.3.34}{}}
+\newlabel{eq:transition_kernel@cref}{{[equation][34][]34}{[1][13][]13}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.5}Value factorisation (QMIX backbone).}{13}{paragraph.3.0.0.5}\protected@file@percent }
+\newlabel{eq:qtot}{{35}{13}{Value factorisation (QMIX backbone)}{equation.3.35}{}}
+\newlabel{eq:qtot@cref}{{[equation][35][]35}{[1][13][]13}}
+\newlabel{eq:mono}{{36}{13}{Value factorisation (QMIX backbone)}{equation.3.36}{}}
+\newlabel{eq:mono@cref}{{[equation][36][]36}{[1][13][]13}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.6}Training objective.}{13}{paragraph.3.0.0.6}\protected@file@percent }
+\newlabel{eq:td_all}{{37}{13}{Training objective}{equation.3.37}{}}
+\newlabel{eq:td_all@cref}{{[subequation][37][]37}{[1][13][]13}}
+\newlabel{eq:td_target}{{37a}{13}{Training objective}{equation.3.37a}{}}
+\newlabel{eq:td_target@cref}{{[subequation][1][37]37a}{[1][13][]13}}
+\citation{chenModelAidedFederatedReinforcement2023}
+\citation{esrafilianModelAidedDeepReinforcement2021}
+\citation{esrafilianModelAidedDeepReinforcement2021}
+\citation{wenREMGraphNN2024}
+\newlabel{eq:td_loss}{{37b}{14}{Training objective}{equation.3.37b}{}}
+\newlabel{eq:td_loss@cref}{{[subequation][2][37]37b}{[1][13][]14}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {3.0.0.7}Federated optimisation.}{14}{paragraph.3.0.0.7}\protected@file@percent }
+\newlabel{eq:fedavg}{{38}{14}{Federated optimisation}{equation.3.38}{}}
+\newlabel{eq:fedavg@cref}{{[equation][38][]38}{[1][14][]14}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methodology}{14}{section.4}\protected@file@percent }
+\newlabel{sec5}{{4}{14}{Methodology}{section.4}{}}
+\newlabel{sec5@cref}{{[section][4][]4}{[1][14][]14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Environment-Model Building}{14}{subsection.4.1}\protected@file@percent }
+\newlabel{sec5_1}{{4.1}{14}{Environment-Model Building}{subsection.4.1}{}}
+\newlabel{sec5_1@cref}{{[subsection][1][4]4.1}{[1][14][]14}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.1.0.1}Design justification.}{14}{paragraph.4.1.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Constraint-Aware Control and Communication}{15}{subsection.4.2}\protected@file@percent }
+\newlabel{sec5_2}{{4.2}{15}{Constraint-Aware Control and Communication}{subsection.4.2}{}}
+\newlabel{sec5_2@cref}{{[subsection][2][4]4.2}{[1][15][]15}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.2.0.1}Safety controller.}{15}{paragraph.4.2.0.1}\protected@file@percent }
+\newlabel{eq:Asafe_final}{{39}{15}{Safety controller}{equation.4.39}{}}
+\newlabel{eq:Asafe_final@cref}{{[equation][39][]39}{[1][15][]15}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.2.0.2}Return-energy estimate.}{15}{paragraph.4.2.0.2}\protected@file@percent }
+\newlabel{eq:bsc}{{40}{15}{Return-energy estimate}{equation.4.40}{}}
+\newlabel{eq:bsc@cref}{{[equation][40][]40}{[1][15][]15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Federated Learning Procedure}{15}{subsection.4.3}\protected@file@percent }
+\newlabel{sec5_3}{{4.3}{15}{Federated Learning Procedure}{subsection.4.3}{}}
+\newlabel{sec5_3@cref}{{[subsection][3][4]4.3}{[1][15][]15}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.0.1}Local optimisation.}{16}{paragraph.4.3.0.1}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Model-Aided FedQMIX\relax }}{16}{algorithm.1}\protected@file@percent }
+\newlabel{alg:FedQMIX}{{1}{16}{Model-Aided FedQMIX\relax }{algorithm.1}{}}
+\newlabel{alg:FedQMIX@cref}{{[algorithm][1][]1}{[1][16][]16}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.0.2}Aggregation.}{16}{paragraph.4.3.0.2}\protected@file@percent }
+\newlabel{eq:fedavg2}{{41}{16}{Aggregation}{equation.4.41}{}}
+\newlabel{eq:fedavg2@cref}{{[equation][41][]41}{[1][16][]16}}
+\citation{chenModelAidedFederatedReinforcement2023}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.0.3}Experimental protocol.}{17}{paragraph.4.3.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.0.4}Hyperparameters and bandwidth.}{17}{paragraph.4.3.0.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{17}{section.5}\protected@file@percent }
+\newlabel{sec2}{{5}{17}{Results}{section.5}{}}
+\newlabel{sec2@cref}{{[section][5][]5}{[1][17][]17}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.1}Scenario summary and rationale.}{17}{paragraph.5.0.0.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Scenario characteristics of the two evaluation maps. Area is the total mission region, obstacle ratio is the fraction of grid cells occupied by buildings/rubble, $\omega $-blocked ratio is the fraction of UAV--victim pairs classified as NLoS by the ray-casting LoS/NLoS mask, and anchor density indicates the number of fixed BLE anchors per $10^5\,\text  {m}^2$.\relax }}{18}{table.caption.5}\protected@file@percent }
+\newlabel{tab:scenario_stats}{{2}{18}{Scenario characteristics of the two evaluation maps. Area is the total mission region, obstacle ratio is the fraction of grid cells occupied by buildings/rubble, $\omega $-blocked ratio is the fraction of UAV--victim pairs classified as NLoS by the ray-casting LoS/NLoS mask, and anchor density indicates the number of fixed BLE anchors per $10^5\,\text {m}^2$.\relax }{table.caption.5}{}}
+\newlabel{tab:scenario_stats@cref}{{[table][2][]2}{[1][17][]18}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.2}Module-wise interpretation of the pipeline.}{18}{paragraph.5.0.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.3}Evaluation protocol.}{18}{paragraph.5.0.0.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Learning curves on the \emph  {Return--Base Map} (RBM). Several methods reach near-ceiling localisation performance under the training setup, but FedQMIX remains among the strongest and most stable performers across seeds.\relax }}{19}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:rbm_learning_curve}{{2}{19}{Learning curves on the \emph {Return--Base Map} (RBM). Several methods reach near-ceiling localisation performance under the training setup, but FedQMIX remains among the strongest and most stable performers across seeds.\relax }{figure.caption.6}{}}
+\newlabel{fig:rbm_learning_curve@cref}{{[figure][2][]2}{[1][18][]19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Learning curves on the \emph  {Reach--Destination Map} (RDM; $1000{\times }1200$\nobreakspace  {}m urban grid). Curves show the mean number of distinct victims localised as a function of training progress. FedQMIX converges rapidly to near-ceiling performance and remains the most stable method across seeds in the more demanding long-horizon scenario.\relax }}{19}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:rdm_learning_curve}{{3}{19}{Learning curves on the \emph {Reach--Destination Map} (RDM; $1000{\times }1200$~m urban grid). Curves show the mean number of distinct victims localised as a function of training progress. FedQMIX converges rapidly to near-ceiling performance and remains the most stable method across seeds in the more demanding long-horizon scenario.\relax }{figure.caption.7}{}}
+\newlabel{fig:rdm_learning_curve@cref}{{[figure][3][]3}{[1][19][]19}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces RBM evaluation scores.\relax }}{20}{table.caption.8}\protected@file@percent }
+\newlabel{tab:evaluation_scores}{{3}{20}{RBM evaluation scores.\relax }{table.caption.8}{}}
+\newlabel{tab:evaluation_scores@cref}{{[table][3][]3}{[1][19][]20}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces RDM evaluation scores.\relax }}{20}{table.caption.9}\protected@file@percent }
+\newlabel{tab:rdm-evals}{{4}{20}{RDM evaluation scores.\relax }{table.caption.9}{}}
+\newlabel{tab:rdm-evals@cref}{{[table][4][]4}{[1][20][]20}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.4}Statistical protocol.}{20}{paragraph.5.0.0.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.5}Baseline choice and interpretation.}{21}{paragraph.5.0.0.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.6}RBM performance.}{21}{paragraph.5.0.0.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.7}RDM performance.}{21}{paragraph.5.0.0.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.8}Final performance summary.}{21}{paragraph.5.0.0.8}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Final evaluation summary across five seeds (Eval-5). Values are reported as mean $\pm $ standard deviation of distinct victims localised.\relax }}{22}{table.caption.10}\protected@file@percent }
+\newlabel{tab:final_summary}{{5}{22}{Final evaluation summary across five seeds (Eval-5). Values are reported as mean $\pm $ standard deviation of distinct victims localised.\relax }{table.caption.10}{}}
+\newlabel{tab:final_summary@cref}{{[table][5][]5}{[1][21][]22}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.9}Statistical comparison against FedQMIX.}{22}{paragraph.5.0.0.9}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Statistical comparison against FedQMIX at the final evaluation checkpoint (Eval-5). Values are reported as mean $\pm $ standard deviation of distinct victims localised across five seeds. Cliff's $\delta $ is computed relative to FED, with positive values favouring FED. The reported $p$-values are from paired one-sided Wilcoxon signed-rank tests using the common seed set across methods.\relax }}{22}{table.caption.11}\protected@file@percent }
+\newlabel{tab:stat_comparison}{{6}{22}{Statistical comparison against FedQMIX at the final evaluation checkpoint (Eval-5). Values are reported as mean $\pm $ standard deviation of distinct victims localised across five seeds. Cliff's $\delta $ is computed relative to FED, with positive values favouring FED. The reported $p$-values are from paired one-sided Wilcoxon signed-rank tests using the common seed set across methods.\relax }{table.caption.11}{}}
+\newlabel{tab:stat_comparison@cref}{{[table][6][]6}{[1][22][]22}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.10}Overall comparison.}{22}{paragraph.5.0.0.10}\protected@file@percent }
+\newlabel{fig:rbm_panel}{{4a}{23}{Return-Base Map (RBM)\relax }{figure.caption.12}{}}
+\newlabel{fig:rbm_panel@cref}{{[subfigure][1][4]4a}{[1][22][]23}}
+\newlabel{sub@fig:rbm_panel}{{a}{23}{Return-Base Map (RBM)\relax }{figure.caption.12}{}}
+\newlabel{sub@fig:rbm_panel@cref}{{[subfigure][1][4]4a}{[1][22][]23}}
+\newlabel{fig:rdm_panel}{{4b}{23}{Reach-Destination Map (RDM)\relax }{figure.caption.12}{}}
+\newlabel{fig:rdm_panel@cref}{{[subfigure][2][4]4b}{[1][22][]23}}
+\newlabel{sub@fig:rdm_panel}{{b}{23}{Reach-Destination Map (RDM)\relax }{figure.caption.12}{}}
+\newlabel{sub@fig:rdm_panel@cref}{{[subfigure][2][4]4b}{[1][22][]23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Illustration of the two simulated post-disaster urban environments: (a) RBM ($600{\times }800$ m) and (b) RDM ($1000{\times }1200$ m). The coloured background shows the building/rubble height map $H(x,y)$. Stars mark victim devices, triangles denote anchor beacons, shaded rectangles indicate UAV start and terminal zones, and dotted lines show example UAV trajectories. For visual clarity, only three UAV trajectories are shown, although all experiments use $I=4$ UAVs.\relax }}{23}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:paths_two_maps}{{4}{23}{Illustration of the two simulated post-disaster urban environments: (a) RBM ($600{\times }800$ m) and (b) RDM ($1000{\times }1200$ m). The coloured background shows the building/rubble height map $H(x,y)$. Stars mark victim devices, triangles denote anchor beacons, shaded rectangles indicate UAV start and terminal zones, and dotted lines show example UAV trajectories. For visual clarity, only three UAV trajectories are shown, although all experiments use $I=4$ UAVs.\relax }{figure.caption.12}{}}
+\newlabel{fig:paths_two_maps@cref}{{[figure][4][]4}{[1][22][]23}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.11}Ablation on surrogate channel and federation.}{23}{paragraph.5.0.0.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Ablation on surrogate channel and federation for FedQMIX. Entries report mean $\pm $ standard deviation of distinct victims localised over three seeds after 1000 training episodes per configuration.\relax }}{23}{table.caption.13}\protected@file@percent }
+\newlabel{tab:ablation}{{7}{23}{Ablation on surrogate channel and federation for FedQMIX. Entries report mean $\pm $ standard deviation of distinct victims localised over three seeds after 1000 training episodes per configuration.\relax }{table.caption.13}{}}
+\newlabel{tab:ablation@cref}{{[table][7][]7}{[1][23][]23}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.12}Coverage heuristic baseline.}{24}{paragraph.5.0.0.12}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Coverage heuristic baseline results. Seed-level summaries (5 RBM + 5 RDM) and final aggregation (mean $\pm $ standard deviation across seeds).\relax }}{24}{table.caption.14}\protected@file@percent }
+\newlabel{tab:coverage_heuristic_summary}{{8}{24}{Coverage heuristic baseline results. Seed-level summaries (5 RBM + 5 RDM) and final aggregation (mean $\pm $ standard deviation across seeds).\relax }{table.caption.14}{}}
+\newlabel{tab:coverage_heuristic_summary@cref}{{[table][8][]8}{[1][24][]24}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.0.0.13}Sensitivity to $p_{\mathrm  {on}}$, $\mathrm  {SNR}_{\mathrm  {thr}}$, and safety radius.}{24}{paragraph.5.0.0.13}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Sensitivity of Model-Aided FedQMIX to BLE duty cycle, SNR threshold, and safety radius. Each row corresponds to one configuration evaluated with a single seed. Metrics report mean victims localised and mean energy per victim over evaluation episodes.\relax }}{25}{table.caption.15}\protected@file@percent }
+\newlabel{tab:sensitivity}{{9}{25}{Sensitivity of Model-Aided FedQMIX to BLE duty cycle, SNR threshold, and safety radius. Each row corresponds to one configuration evaluated with a single seed. Metrics report mean victims localised and mean energy per victim over evaluation episodes.\relax }{table.caption.15}{}}
+\newlabel{tab:sensitivity@cref}{{[table][9][]9}{[1][24][]25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Deployment-Oriented Federated Coordination Considerations}{25}{subsection.5.1}\protected@file@percent }
+\newlabel{sec:deployment}{{5.1}{25}{Deployment-Oriented Federated Coordination Considerations}{subsection.5.1}{}}
+\newlabel{sec:deployment@cref}{{[subsection][1][5]5.1}{[1][25][]25}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.1}Communication payload and link feasibility.}{25}{paragraph.5.1.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.2}Privacy boundary and threat model.}{25}{paragraph.5.1.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.3}Guidelines for intermittent connectivity.}{25}{paragraph.5.1.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion and Limitations}{26}{section.6}\protected@file@percent }
+\newlabel{sec13}{{6}{26}{Conclusion and Limitations}{section.6}{}}
+\newlabel{sec13@cref}{{[section][6][]6}{[1][26][]26}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.1}Scenario-dependent applicability.}{26}{paragraph.6.0.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.2}Limitations and robustness.}{27}{paragraph.6.0.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.3}Physical validation perspective.}{27}{paragraph.6.0.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.4}Path to deployment and ethics.}{27}{paragraph.6.0.0.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.5}Federated-operation realism.}{28}{paragraph.6.0.0.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {6.0.0.6}Future work.}{28}{paragraph.6.0.0.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Simulation Parameters}{28}{appendix.0.1}\protected@file@percent }
+\newlabel{app:params}{{A}{28}{Simulation Parameters}{appendix.0.1}{}}
+\newlabel{app:params@cref}{{[appendix][1][2147483647,0]A}{[1][28][]28}}
+\bibdata{sn-bibliography}
+\bibcite{valavanisHandbookUnmannedAerial2015}{{1}{2015}{{Valavanis and Vachtsevanos}}{{}}}
+\bibcite{austinUnmannedAircraftSystems2010a}{{2}{2010}{{Austin}}{{}}}
+\bibcite{yaoUnmannedAerialVehicle2019}{{3}{2019}{{Yao et~al.}}{{Yao, Qin, and Chen}}}
+\bibcite{kocerInspectionwhileflyingAutonomousContactbased2019}{{4}{2019}{{Kocer et~al.}}{{Kocer, Tjahjowidodo, Pratama, and Seet}}}
+\bibcite{tomicFullyAutonomousUAV2012}{{5}{2012}{{Tomi{\'c} et~al.}}{{Tomi{\'c}, Schmid, Lutz, D{\"o}mel, Kassecker, Mair, Grixa, Ruess, Suppa, and Burschka}}}
+\bibcite{hanSurveyMobileAnchor2016}{{6}{2016}{{Han et~al.}}{{Han, Jiang, Zhang, Duong, Guizani, and Karagiannidis}}}
+\bibcite{wangGuideLocUAVAssistedMultitarget2017}{{7}{2017}{{Wang et~al.}}{{Wang, Ji, Wu, Bai, Ding, Pang, Chen, Chen, and Fang}}}
+\bibcite{zhouMultiUAVDRL2024}{{8}{2024}{{Kong et~al.}}{{Kong, Zhou, Li, and Wang}}}
+\bibcite{ewersTimeCriticalSAR2024}{{9}{2024}{{Ewers et~al.}}{{Ewers, Anderson, and Thomson}}}
+\@writefile{lot}{\contentsline {table}{\numberline {A1}{\ignorespaces Simulation parameters used throughout the study (nominal configuration, unless stated otherwise).\relax }}{29}{table.caption.16}\protected@file@percent }
+\newlabel{tab:sim-params}{{A1}{29}{Simulation parameters used throughout the study (nominal configuration, unless stated otherwise).\relax }{table.caption.16}{}}
+\newlabel{tab:sim-params@cref}{{[table][1][2147483647]A1}{[1][28][]29}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}References}{29}{appendix.0.2}\protected@file@percent }
+\bibcite{pintoRadiologicalScoutingMonitoring2021}{{10}{2021}{{Pinto et~al.}}{{Pinto, Vale, Brouwer, Borbinha, Corisco, Ventura, Silva, Mourato, Marques, Romanets, Sargento, and Gon{\c {c}}alves}}}
+\bibcite{stibingerLocalizationIonizingRadiation2020}{{11}{2020}{{{\v {S}}tibinger et~al.}}{{{\v {S}}tibinger, B{\'a}{\v {c}}a, and Saska}}}
+\bibcite{phamDistributedControlFramework2018}{{12}{2018}{{Pham et~al.}}{{Pham, La, Feil-Seifer, and Dean}}}
+\bibcite{zanellaBestPracticeRSS2016}{{13}{2016}{{Zanella}}{{}}}
+\bibcite{liuRSSDistributionBasedPassive2016}{{14}{2016}{{Liu et~al.}}{{Liu, Fang, Yang, Jiang, Chen, Wang, Xing, and Cai}}}
+\bibcite{tomicRSSBasedLocalizationWireless2015}{{15}{2015}{{Tomic et~al.}}{{Tomic, Beko, and Dinis}}}
+\bibcite{zhangOptimalPlacementMethod2014}{{16}{2014}{{Zhang et~al.}}{{Zhang, Xia, Jia, Shen, and Guo}}}
+\bibcite{rubinaNovelHybridPath2017}{{17}{2017}{{Rubina et~al.}}{{Rubina, Artemenko, Andryeyev, and Mitschele-Thiel}}}
+\bibcite{suttonReinforcementLearningIntroduction1998}{{18}{1998}{{Sutton and Barto}}{{}}}
+\bibcite{ayodeleIntroductionMachineLearning2010}{{19}{2010}{{Ayodele}}{{}}}
+\bibcite{caicedoActiveObjectLocalization2015}{{20}{2015}{{Caicedo and Lazebnik}}{{}}}
+\bibcite{wangMultitaskLearningObject2019}{{21}{2019}{{Wang et~al.}}{{Wang, Zhang, Wang, and Wang}}}
+\bibcite{zhaoDeepReinforcementLearning2020}{{22}{2020}{{Zhao et~al.}}{{Zhao, Wang, and Li}}}
+\bibcite{rauchensteinImprovingUnderwaterLocalization2018}{{23}{2018}{{Rauchenstein et~al.}}{{Rauchenstein, Vishnu, Li, and Deng}}}
+\bibcite{liuDoubleQLearningRadiation2019}{{24}{2019}{{Liu and Abbaszadeh}}{{}}}
+\bibcite{proctorProximalPolicyOptimization2021}{{25}{2021}{{Proctor et~al.}}{{Proctor, Teuscher, Hecht, and Osi{\'n}ski}}}
+\bibcite{placedDeepReinforcementLearning2020}{{26}{2020}{{Placed and Castellanos}}{{}}}
+\bibcite{grandoDoubleCriticDeep2021}{{27}{2021}{{Grando et~al.}}{{Grando, de~Jesus, Kich, and Kolling}}}
+\bibcite{jungMaplessNavigationLearning2021}{{28}{2021}{{Jung and Shim}}{{}}}
+\bibcite{chunxueUAVAutonomousTarget2019}{{29}{2019}{{Wu et~al.}}{{Wu, Ju, Wu, Lin, Xiong, Xu, Li, and Liang}}}
+\bibcite{zhuMARLCommSurvey2024}{{30}{2024}{{Zhu et~al.}}{{Zhu, Dong, Zhang, and Zhang}}}
+\bibcite{ningMARLSurvey2024}{{31}{2024}{{Ning and Xie}}{{}}}
+\bibcite{lamaaziMobileEdgeBasedCrowdSensing2020}{{32}{2020}{{Lamaazi et~al.}}{{Lamaazi, Mizouni, Singh, and Otrok}}}
+\bibcite{shahbaziAgentBasedRecommendationELearning2022}{{33}{2022}{{Shahbazi and Byun}}{{}}}
+\bibcite{wuTaskAllocationLoad2022}{{34}{2022}{{Wu et~al.}}{{Wu, Ghadami, Bayrak, Smereka, and Epureanu}}}
+\bibcite{pintoNetoFRLIoT2023}{{35}{2023}{{Pinto~Neto et~al.}}{{Pinto~Neto, Sadeghi, Zhang, and Dadkhah}}}
+\bibcite{qiFRLSurvey2022}{{36}{2021}{{Qi et~al.}}{{Qi, Zhou, Lei, and Zheng}}}
+\bibcite{ebrahimiAutonomousUAVTrajectory2020}{{37}{2020}{{Ebrahimi et~al.}}{{Ebrahimi, Sharafeddine, Ho, and Assi}}}
+\bibcite{chenModelAidedFederatedReinforcement2023}{{38}{2023}{{Chen et~al.}}{{Chen, Esrafilian, Bayerlein, Gesbert, and Caccamo}}}
+\bibcite{esrafilianModelAidedDeepReinforcement2021}{{39}{2021}{{Esrafilian et~al.}}{{Esrafilian, Bayerlein, and Gesbert}}}
+\bibcite{wenREMGraphNN2024}{{40}{2024}{{Wen et~al.}}{{Wen, Fang, and Fan}}}
+\newlabel{LastPage}{{}{31}{}{page.31}{}}
+\xdef\lastpage@lastpage{31}
+\xdef\lastpage@lastpageHy{31}
+\gdef \@abspage@last{31}

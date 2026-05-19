@@ -146,7 +146,7 @@ def plot_map(map_name, fig_num):
 
     ax.set_xscale("log")
     ax.set_xlabel("Episode [log scale]", fontsize=12)
-    ax.set_ylabel("Total collected data", fontsize=12)
+    ax.set_ylabel("Victims localised (out of 10)", fontsize=12)
     ax.grid(True, which="both", linestyle="--", alpha=0.35)
     ax.legend(loc="lower right", fontsize=9, framealpha=0.9)
     ax.set_title(

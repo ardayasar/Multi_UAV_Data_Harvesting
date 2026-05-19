@@ -68,6 +68,20 @@ def get_common_args():
                         help='weight for coordination penalty (penalise UAV overlap)')
     parser.add_argument('--lambda_new', type=float, default=1.0,
                         help='one-time localisation bonus per newly found victim (SAR reward shaping)')
+    parser.add_argument('--lambda_thr', type=float, default=1.0,
+                        help='scaling coefficient for the base throughput term in SAR reward shaping')
+
+    # -------- Federated robustness --------
+    parser.add_argument('--drop_prob', type=float, default=0.0,
+                        help='probability that a worker upload is dropped each FedAvg round (0=no drop)')
+
+    # -------- Channel-shift robustness --------
+    parser.add_argument('--eval_snr_offset_db', type=float, default=0.0,
+                        help='additive SNR offset applied only at evaluation (negative = degraded channel)')
+
+    # -------- Localisation success threshold --------
+    parser.add_argument('--loc_success_threshold_m', type=float, default=50.0,
+                        help='radius (m) within which a PSO estimate counts as a successful localisation')
 
     args, _ = parser.parse_known_args()
     return args

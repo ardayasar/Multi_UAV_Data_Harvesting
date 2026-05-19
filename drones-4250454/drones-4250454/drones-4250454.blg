@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: drones-4250454.aux
+The style file: Definitions/mdpi.bst
+Database file #1: sn-bibliography.bib
+You've used 40 entries,
+            2887 wiz_defined-function locations,
+            862 strings with 15010 characters,
+and the built_in function-call counts, 18466 in all, are:
+= -- 1601
+> -- 1194
+< -- 18
++ -- 519
+- -- 320
+* -- 1642
+:= -- 2803
+add.period$ -- 158
+call.type$ -- 40
+change.case$ -- 40
+chr.to.int$ -- 40
+cite$ -- 40
+duplicate$ -- 809
+empty$ -- 1421
+format.name$ -- 413
+if$ -- 3902
+int.to.chr$ -- 1
+int.to.str$ -- 40
+missing$ -- 42
+newline$ -- 240
+num.names$ -- 122
+pop$ -- 391
+preamble$ -- 0
+purify$ -- 40
+quote$ -- 0
+skip$ -- 543
+stack$ -- 0
+substring$ -- 901
+swap$ -- 196
+text.length$ -- 7
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 274
+warning$ -- 0
+while$ -- 145
+width$ -- 0
+write$ -- 564

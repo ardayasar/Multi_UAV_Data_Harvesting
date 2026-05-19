@@ -1,0 +1,41 @@
+\begin{table}[t]
+\centering
+\caption{Per-seed evaluation scores (last 5 checkpoints) on the Reach-Destination Map (RDM). Values: victims localised out of 10. \textbf{Bold} indicates the maximum score achieved in that checkpoint column.}
+\label{tab:seed_rdm}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Method--Seed & Eval-5 & Eval-4 & Eval-3 & Eval-2 & Eval-1 \\
+\midrule
+IPPO-s1 & 8.2 & 9.2 & 9.4 & 8.6 & 8.0 \\
+IPPO-s2 & 5.0 & 5.0 & 5.0 & 5.0 & 5.0 \\
+IPPO-s3 & 7.2 & 7.0 & 7.0 & 7.2 & 7.4 \\
+IPPO-s4 & \textbf{10.0} & 9.8 & 9.6 & 9.8 & 9.6 \\
+IPPO-s5 & 7.4 & 7.4 & 7.8 & 8.0 & 6.4 \\
+\midrule
+IQL-s1 & 7.0 & 7.0 & 8.4 & 7.2 & 6.8 \\
+IQL-s2 & 7.0 & 7.2 & 7.0 & 7.2 & 7.4 \\
+IQL-s3 & 9.8 & 9.6 & 9.2 & \textbf{10.0} & 9.6 \\
+IQL-s4 & 9.4 & 8.6 & 8.6 & 7.8 & 9.6 \\
+IQL-s5 & 9.8 & 9.8 & 9.8 & 9.6 & 9.6 \\
+\midrule
+QMIX-s1 & 9.9 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+QMIX-s2 & 8.2 & 8.3 & 8.2 & 8.2 & 8.1 \\
+QMIX-s3 & 8.1 & 7.2 & 7.7 & 8.2 & 8.0 \\
+QMIX-s4 & 8.2 & 8.4 & 8.3 & 8.4 & 8.1 \\
+QMIX-s5 & 9.9 & 9.8 & 9.6 & 9.9 & 9.8 \\
+\midrule
+MOD-s1 & 7.0 & 9.4 & 7.0 & 7.0 & 9.3 \\
+MOD-s2 & 9.4 & \textbf{10.0} & 9.8 & 9.4 & 9.7 \\
+MOD-s3 & 8.8 & 8.8 & 8.6 & 7.4 & 9.1 \\
+MOD-s4 & 8.0 & 8.3 & 8.0 & 8.0 & 8.8 \\
+MOD-s5 & 9.1 & 9.4 & 8.8 & 8.8 & 9.9 \\
+\midrule
+FED-s1 & 9.9 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+FED-s2 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+FED-s3 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+FED-s4 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+FED-s5 & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} & \textbf{10.0} \\
+\bottomrule
+\end{tabular}
+\end{table}

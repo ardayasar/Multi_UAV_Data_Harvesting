@@ -106,10 +106,11 @@ class RolloutWorker:
                 # SAR localisation bonus: fires ONCE per victim (new_victims already
                 # counts only first-time detections via the detected_victims set)
                 assert new_victims >= 0, f"new_victims must be non-negative, got {new_victims}"
+                lambda_thr = getattr(self.args, 'lambda_thr', 1.0)
                 lambda_new = getattr(self.args, 'lambda_new', 1.0)
                 localisation_bonus = lambda_new * new_victims
                 episode_localisation_bonus += localisation_bonus
-                reward = throughput + localisation_bonus
+                reward = lambda_thr * throughput + localisation_bonus
             else:
                 reward = throughput
 
@@ -185,9 +186,12 @@ class RolloutWorker:
 
         energy_used = float(getattr(self.env, "energy_used", 0.0))
         energy_per_victim = energy_used / max(1, total_detected)
+        n_devices = getattr(self.env, 'n_devices', 10)
+        success_rate = total_detected / n_devices if n_devices > 0 else 0.0
 
         info = {
             "victims_found": total_detected,
+            "success_rate": success_rate,
             "time_to_first_detection": time_to_first_detection,
             "energy_used": energy_used,
             "energy_per_victim": energy_per_victim,

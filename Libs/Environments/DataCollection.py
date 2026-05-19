@@ -154,6 +154,15 @@ class DataCollection(EnvironmentBase):
         # indicate which device is connected by which UAV
         self.device_access = np.zeros(self.n_agents)
 
+        # --- channel-shift robustness (Reviewer 1/5) ---
+        # Set to a negative dB value to simulate degraded channel at eval time.
+        # Training always uses 0.0; only evaluation scripts override this.
+        self.snr_offset_db = 0.0
+
+        # --- per-device RSSI bias (Reviewer 2/6, BLE hardware heterogeneity) ---
+        # shape (n_devices,); sampled once per evaluation run by the eval script.
+        self.device_rssi_bias = np.zeros(self.n_devices, dtype=np.float32)
+
         # --- episode-level accounting for statistics ---
         self.energy_used = 0.0
         self.move_count = 0
@@ -566,7 +575,10 @@ class DataCollection(EnvironmentBase):
                         snr_db = self.learning_channel_model.get_user_snr_db(q_pt=agent.current_pose, user_pos=pos)
                     else:
                         snr_db = self.radio_ch_model.snr_measurement(self.city, pos, agent.current_pose, 'device')
-                    # the signal strength is enough to let the UAV get access to the info of the device
+                    # global channel-shift offset (0.0 during normal runs)
+                    snr_db += self.snr_offset_db
+                    # per-device hardware bias (0.0 during normal runs)
+                    snr_db += float(self.device_rssi_bias[d_id])
                     agent_device_snr[d_id] = snr_db
         return agent_device_snr
 

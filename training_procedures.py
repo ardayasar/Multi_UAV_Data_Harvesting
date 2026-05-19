@@ -179,7 +179,7 @@ def _train_fedqmix(args, params):
     data_train_lists = [[] for _ in range(n_workers)]
     reward_train_lists = [[] for _ in range(n_workers)]
 
-    global_data, global_rewards, est_pos_log = [], [], []
+    global_data, global_rewards, est_pos_log, noniid_log = [], [], [], []
 
     # Initial global evaluation (worker 0)
     d0, r0, *_ = runners[0].evaluate(model=args.model)
@@ -241,9 +241,20 @@ def _train_fedqmix(args, params):
                 )
             )
 
-        # --- FedAvg aggregation (simple unweighted mean)
-        q_agg = sum(pq_vecs) / n_workers
-        rnn_agg = sum(prnn_vecs) / n_workers
+        # --- FedAvg aggregation with optional packet-drop (Reviewer 2, Item 7)
+        drop_prob = getattr(args, 'drop_prob', 0.0)
+        if drop_prob > 0.0:
+            participating = [i for i in range(n_workers)
+                             if np.random.random() >= drop_prob]
+            if not participating:          # guarantee at least one
+                participating = [np.random.randint(n_workers)]
+        else:
+            participating = list(range(n_workers))
+
+        active_q   = [pq_vecs[i]   for i in participating]
+        active_rnn = [prnn_vecs[i] for i in participating]
+        q_agg   = sum(active_q)   / len(active_q)
+        rnn_agg = sum(active_rnn) / len(active_rnn)
 
         for r in runners:
             torch.nn.utils.vector_to_parameters(
@@ -253,16 +264,29 @@ def _train_fedqmix(args, params):
                 rnn_agg, r.agents.policy.eval_rnn.parameters()
             )
 
+        # --- non-IID diagnostic: log per-worker data diversity (Reviewer 2, Item 8)
+        worker_means = [
+            float(np.mean(data_train_lists[wi][-agg_period:])) if data_train_lists[wi] else 0.0
+            for wi in range(n_workers)
+        ]
+        noniid_var = float(np.var(worker_means))
+
         # --- global evaluation from worker 0
         gd, gr, *_ = runners[0].evaluate(model=args.model)
         global_data.append(gd)
         global_rewards.append(gr)
-        print(f"[FedQMIX] round {round_k + 1:3d}/{num_rounds:3d}  global-data={gd:.2f}")
+        noniid_log.append(noniid_var)
+        participating_str = str(participating) if drop_prob > 0.0 else "all"
+        print(f"[FedQMIX] round {round_k + 1:3d}/{num_rounds:3d}  "
+              f"global-data={gd:.2f}  "
+              f"clients={participating_str}  "
+              f"non-IID-var={noniid_var:.3f}")
 
     # ─── save exactly like the article code ─────────────────────
     np.save(os.path.join(save_path, 'global_data.npy'), np.asarray(global_data))
     np.save(os.path.join(save_path, 'global_rewards.npy'), np.asarray(global_rewards))
     np.save(os.path.join(save_path, 'est_device_pos.npy'), np.asarray(est_pos_log))
+    np.save(os.path.join(save_path, 'noniid_var.npy'), np.asarray(noniid_log))
 
     with open(os.path.join(save_path, 'log_params.txt'), 'w') as f:
         json.dump(vars(args), f, indent=2)
